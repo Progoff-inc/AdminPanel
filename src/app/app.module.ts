@@ -21,6 +21,7 @@ import { SignComponent } from './sign/sign.component';
 import { MenuComponent } from './menu/menu.component';
 import { LoadComponent } from './load/load.component';
 import { LoadService } from './services/load.service';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LoadService } from './services/load.service';
     SignComponent,
     MenuComponent,
     ModalComponent,
-    LoadComponent
+    LoadComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
