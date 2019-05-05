@@ -27,8 +27,15 @@ export class SignInComponent implements OnInit {
     if(this.userForm.invalid){
       return;
     }
-    this.us.signIn(this.userForm.value.Email, this.userForm.value.Password);
-    this.router.navigate(['/']);
+    this.us.signIn(this.userForm.value.Email, this.userForm.value.Password).subscribe(data => {
+      if(data){
+        console.log(data);
+        this.us.User = data;
+        this.us.save(true);
+        this.router.navigate(['/']);
+      }
+      
+    })
   }
   get f(){return this.userForm.controls};
 }

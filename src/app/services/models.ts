@@ -26,14 +26,10 @@ export interface Good{
   }
 
   export class User{
-    UserId:number;
+    Id:number;
     Name:string;
     Email:string;
     Password:string;
-    Phone?:string;
-    IsAdmin?:boolean;
-
-    Deals:Deal[];
 }
 
 export interface UserResponse{

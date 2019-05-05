@@ -26,8 +26,16 @@ export class SignUpComponent implements OnInit {
     if(this.userForm.invalid){
       return;
     }
-    this.us.signUp(this.userForm.value);
-    this.router.navigate(['/']);
+    this.us.signUp(this.userForm.value).subscribe(data => {
+      console.log(data);
+      if(data){
+        this.us.User = data;
+        this.us.save(true);
+        this.router.navigate(['/']);
+      }
+      
+    })
+    
   }
 
   get f(){return this.userForm.controls};

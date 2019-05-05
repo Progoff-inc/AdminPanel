@@ -160,11 +160,42 @@ class DataBase {
     }
 
     public function addUser($user){
-        $res = $this->genInsertQuery($app,"users");
+        $user['Password'] = md5(md5($user['Password']));
+        $res = $this->genInsertQuery($user,"users");
         $s = $this->db->prepare($res[0]);
         
         
-        return $this->db->lastInsertId();
+        return $this->getUserById($this->db->lastInsertId());
+    }
+
+    public function getUser($e, $p){
+        $s = $this->db->prepare("SELECT Id, Name, Email FROM users WHERE Email=? and Password=?");
+        $s->execute(array($e, md5(md5($p))));
+        $s->setFetchMode(PDO::FETCH_CLASS, 'User');
+        $u=$s->fetch();
+        $token = null;
+        if($u){
+            $token = md5(md5(md5($p)).rand(1000,9999));
+            $this->setToken($u->Id, $token);
+        }
+        return array($u, $token);
+    }
+
+    private function setToken($uid, $token){
+        $s = $this->db->prepare('UPDATE users SET Token=? WHERE Id=?');
+        $s->execute(array($token, $uid));
+    }
+
+    private function getUserById($id){
+        $s = $this->db->prepare("SELECT Id, Name, Email, Password FROM users WHERE Id=?");
+        $s->execute(array($id));
+        $s->setFetchMode(PDO::FETCH_CLASS, 'User');
+        $u=$s->fetch();
+        $token = md5($u->Password.rand(1000,9999));
+        $this->setToken($u->Id, $token);
+        unset($u->Password);
+        
+        return array($u,$token);
     }
 
 

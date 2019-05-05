@@ -20,7 +20,7 @@
         <small  class="form-text text-danger" *ngIf="submitted && f.Phone.errors && f.Phone.errors.pattern">Некорректный телефон</small>
     </div> -->
     
-    <button type="submit" class="btn btn-primary" >Зарегистрироваться</button>
+    <button type="submit" class="btn btn-primary" (click)="signUp()">Зарегистрироваться</button>
     <button class="btn btn-link" routerLink="/sign">Войти</button>
   </form>
   

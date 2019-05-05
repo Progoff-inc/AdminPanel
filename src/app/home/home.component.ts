@@ -9,12 +9,9 @@ import { UserService } from '../services/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router:Router, private us:UserService) { }
+  constructor(private router:Router, public us:UserService) { }
 
   ngOnInit() {
-    if(!this.us.user){
-      this.router.navigate(['sign']);
-    }
     
   }
 

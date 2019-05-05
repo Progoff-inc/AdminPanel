@@ -12,14 +12,15 @@ export class UserService{
     public user:User;
     token:string;
     users:User[] = [];
-    baseUrl:string='http://client.nomokoiw.beget.tech/vi/';
+    baseUrl:string='http://client.nomokoiw.beget.tech/admin/';
 
     constructor(private router:Router, private http: HttpClient, private ls:LoadService){
+        // sessionStorage.removeItem('userAdminPanel');
+        // localStorage.removeItem('userAdminPanel');
         if(sessionStorage.getItem('userAdminPanel')){
             let u = JSON.parse(sessionStorage.getItem('userAdminPanel'));
             this.signIn(u.Email, u.Password).subscribe(data => {
-                this.user = data.User;
-                this.token = data.Token;
+                this.User = data;
                 this.save();
             })
             
@@ -27,12 +28,18 @@ export class UserService{
         else if(localStorage.getItem('userAdminPanel')){
             let u = JSON.parse(localStorage.getItem('userAdminPanel'));
             this.signIn(u.Email, u.Password).subscribe(data => {
-                this.user = data.User;
-                this.token = data.Token;
+                this.User = data;
                 this.save();
             })
             
+        }else{
+            this.router.navigate(['sign']);
         }
+    }
+
+    set User(User:UserResponse){
+        this.user = User.User;
+        this.token = User.Token; 
     }
 
     /**
@@ -58,6 +65,7 @@ export class UserService{
      */
     public save(local = false){
         if(local){
+            console.log(this.user);
             localStorage.setItem('userAdminPanel', JSON.stringify(this.user));
         }
         sessionStorage.setItem('userAdminPanel', JSON.stringify(this.user));
