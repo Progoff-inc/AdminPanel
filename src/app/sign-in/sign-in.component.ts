@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserService } from '../services/user.service';
+import { ModalService } from '../services/modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -10,7 +13,7 @@ export class SignInComponent implements OnInit {
   userForm:FormGroup;
   save = false;
   submitted = false;
-  constructor(private fb:FormBuilder) { }
+  constructor(private fb:FormBuilder, private us:UserService, private router:Router) { }
 
   ngOnInit() {
     this.userForm = this.fb.group({
@@ -24,6 +27,8 @@ export class SignInComponent implements OnInit {
     if(this.userForm.invalid){
       return;
     }
+    this.us.signIn(this.userForm.value.Email, this.userForm.value.Password);
+    this.router.navigate(['/']);
   }
   get f(){return this.userForm.controls};
 }

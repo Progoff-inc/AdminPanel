@@ -36,6 +36,11 @@ export interface Good{
     Deals:Deal[];
 }
 
+export interface UserResponse{
+  User:User;
+  Token:string;
+}
+
 export class Deal{
     DealId:number;
     UserId:number;

@@ -1,4 +1,4 @@
-import { Good, NewUser, User, UserInfo } from './models';
+import { Good, NewUser, User, UserInfo, UserResponse } from './models';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { CartItem } from './models';
@@ -10,12 +10,58 @@ import { LoadService } from './load.service';
 @Injectable()
 export class UserService{
     public user:User;
+    token:string;
+    users:User[] = [];
     baseUrl:string='http://client.nomokoiw.beget.tech/vi/';
 
     constructor(private router:Router, private http: HttpClient, private ls:LoadService){
-        
+        if(sessionStorage.getItem('userAdminPanel')){
+            let u = JSON.parse(sessionStorage.getItem('userAdminPanel'));
+            this.signIn(u.Email, u.Password).subscribe(data => {
+                this.user = data.User;
+                this.token = data.Token;
+                this.save();
+            })
+            
+        }
+        else if(localStorage.getItem('userAdminPanel')){
+            let u = JSON.parse(localStorage.getItem('userAdminPanel'));
+            this.signIn(u.Email, u.Password).subscribe(data => {
+                this.user = data.User;
+                this.token = data.Token;
+                this.save();
+            })
+            
+        }
     }
 
+    /**
+     * Авторизация пользователя
+     * @param email Email пользовтеля
+     * @param password Пароль пользователя
+     */
+    public signIn(email:string, password:string){
+        return this.http.get<UserResponse>(this.baseUrl + 'UserController.php?Key=get-user&Email='+email+'&Password='+password);
+    }
+
+    /**
+     * Регистрация пользователя
+     * @param user Новый пользователь
+     */
+    public signUp(user:any){
+        return this.http.post<UserResponse>(this.baseUrl + 'UserController.php?Key=add-user', user);
+    }
+
+    /**
+     * Сохрание данных пользователя онлайн
+     * @param local сохранение пользователя в localStorage на клиенте
+     */
+    public save(local = false){
+        if(local){
+            localStorage.setItem('userAdminPanel', JSON.stringify(this.user));
+        }
+        sessionStorage.setItem('userAdminPanel', JSON.stringify(this.user));
+    }
     
     /**
      * Генерация пароля

@@ -22,6 +22,7 @@ import { MenuComponent } from './menu/menu.component';
 import { LoadComponent } from './load/load.component';
 import { LoadService } from './services/load.service';
 import { HomeComponent } from './home/home.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { HomeComponent } from './home/home.component';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [FormBuilder, HttpClient, ModalService, BsModalService, LoadService],
+  providers: [FormBuilder, HttpClient, ModalService, BsModalService, UserService, LoadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
