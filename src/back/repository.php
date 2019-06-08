@@ -1,48 +1,91 @@
 <?php
 require 'models.php';
 class DataBase {
-    //$this->db = new PDO('mysql:host=localhost;dbname=nomokoiw_portal;charset=UTF8','nomokoiw_portal','KESRdV2f');
+    
+    /**
+     * Подключение к базе данных
+     */
     public $db;
     public function __construct()
     {
-        //$this->db = new PDO('mysql:host=localhost;dbname=myblog;charset=UTF8','nlc','12345');
-        $this->db = new PDO('mysql:host=localhost;dbname=nomokoiw_admin;charset=UTF8','nomokoiw_admin','p&s&xi4C');
+        $this->db = new PDO('mysql:host=localhost;dbname=nomokoiw_admin;charset=UTF8','nomokoiw_admin','KESRdV2f');
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     }
 
-    public function uploadFile($pid, $files, $t){
-        $img=$this->getImage($pid, $t);
-        if($img){
-            $this->removeFile($img);
-        }
-        $url = "http://client.nomokoiw.beget.tech/progoff/";
-        $n = basename($t."_".$pid."_".$files['Data']['name']);
-        $tid=ucfirst($t)."Id";
-        $t .="s";
-        $d = "Files/$n";
-        if(file_exists("Files")){
+    /**
+     * Загрузка файла на хост
+     * 
+     * Позволяет загрузить файл на хост и сохранить путь к нему в указанную таблицу, строку и колонку
+     * 
+     * @param string $l логин пользователя
+     * @param string $p пароль пользователя
+     * @param string $pid id строки в которую необходимо вставить адрес файла
+     * @param blob $files файл для вставки из глобального массива $_FILES
+     * @param string $t таблица, в которую вставить адрес файла
+     * @param string $column столбец для вставки адреса файла
+     */
+    public function uploadFile($l, $p, $pid, $files, $t, $column){
+        if($this->checkAdmin($l, $p)){
+            $img=$this->getImage($pid, $t, $column);
+            if($img){
+                $this->removeFile($img);
+            }
+            $url = "http://client.nomokoiw.beget.tech/admin/";
+            $n = basename($t."_".$pid."_".$files['Data']['name']);
+            //$tid=ucfirst($t)."Id";
+            $tid="Id";
+            $t .="s";
+            $d = "Files/$n";
+            if(file_exists("Files")){
+                
+                if(move_uploaded_file($files['Data']['tmp_name'], $d)){
+                    $s = $this->db->prepare("UPDATE $t SET $column=? WHERE $tid=?");
+                    $s->execute(array($url.$d, $pid));
+                    return($url.$d);
+                }else{
+                    return($_FILES['Data']['tmp_name']);
+                }
+            }else{
+                mkdir("Files");
+                if(move_uploaded_file($files['Data']['tmp_name'], $d)){
+                    $s = $this->db->prepare("UPDATE $t SET $column=? WHERE $tid=?");
+                    $s->execute(array($url.$d, $pid));
+                    return($url.$d);
+                }else{
+                    return($_FILES['Data']['tmp_name']);
+                }
+            }
             
-            if(move_uploaded_file($files['Data']['tmp_name'], $d)){
-                $s = $this->db->prepare("UPDATE $t SET Image=? WHERE $tid=?");
-                $s->execute(array($url.$d, $pid));
-                return($url.$d);
-            }else{
-                return($_FILES['Data']['tmp_name']);
-            }
+            return false;
         }else{
-            mkdir("Files");
-            if(move_uploaded_file($files['Data']['tmp_name'], $d)){
-                $s = $this->db->prepare("UPDATE $t SET Image=? WHERE $tid=?");
-                $s->execute(array($url.$d, $pid));
-                return($url.$d);
-            }else{
-                return($_FILES['Data']['tmp_name']);
-            }
+            return null;
         }
-        
-        return false;
     }
 
+    /**
+     * Получение адреса изображения или файла
+     * 
+     * @param number $id id строки
+     * @param string $t таблица для поиска адреса изображения
+     * @param string $column столбец для поиска изображения
+     * @return string адрес файла
+     */
+    public function getImage($id, $t, $column){
+        // $tid=ucfirst($t)."Id";
+        $tid="Id";
+        $t .="s";
+        $s = $this->db->prepare("SELECT $column FROM $t WHERE $tid=?");
+        $s->execute(array($id));
+        return $s->fetch()[$column];
+    }
+
+    /**
+     * Генерация запроса вставки
+     * 
+     * @param mixed $ins объект для вставки, столбцы объекта должны соответсвовать столбцам таблицы
+     * @param string $t таблица для вставки
+     * @return array массив, первым элементом которого является строка запроса, вторым - массив вставляемых значений
+     */
     private function genInsertQuery($ins, $t){
         $res = array('INSERT INTO '.$t.' (',array());
         $q = '';
@@ -58,6 +101,15 @@ class DataBase {
         return $res;
         
     }
+
+    /**
+     * Генерация запроса обновления
+     * 
+     * @param array $keys стобцы таблицы, которые надо обновить
+     * @param array $values значения, которые надо вставить в указанные стобцы
+     * @param string $t таблица для вставки
+     * @return array массив, первым элементом которого является строка запроса, вторым - массив вставляемых значений
+     */
     private function genUpdateQuery($keys, $values, $t, $id){
         $res = array('UPDATE '.$t.' SET ',array());
         $q = '';
@@ -73,129 +125,350 @@ class DataBase {
             
         }
         $res[0]=rtrim($res[0],', ');
-        $res[0]=$res[0].' WHERE '.rtrim($t,'s').'Id = '.$id;
+        $res[0]=$res[0].' WHERE Id = '.$id;
         
         return $res;
         
     }
     
+    /**
+     * Удаление файла с хоста
+     * 
+     * @param string $filelink путь к файлу
+     */
     private function removeFile($filelink){
-        $path = explode('vi/',$filelink);
-        unlink($path[1]);
+        $path = explode('admin/',$filelink);
+        if($path[1]){
+            unlink($path[1]);
+        }
         
     }
     
-    public function setEnter($ip){
-        $sth = $this->db->query("SELECT IP FROM enters ORDER BY Id DESC LIMIT 1");
-        if($sth->fetch()['IP']!=$ip){
-            $s = $this->db->prepare("INSERT INTO enters (IP) VALUES (?)");
-            $s->execute(array($ip));
+    // ------------------------       Запросы на получение данных из базы       ------------------------
+
+    public function getSolids($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
         }
-    }
-    
-    public function getClients(){
-        $sth = $this->db->query("SELECT * FROM clients");
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'Client');
+        $sth = $this->db->query("SELECT * FROM solids");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Solid');
         return $sth->fetchAll();
     }
 
-    public function getTeam(){
-        $sth = $this->db->query("SELECT * FROM mates");
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'Mate');
+    public function getPeriodicals($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->query("SELECT * FROM periodicals");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Periodical');
         return $sth->fetchAll();
     }
 
-    public function getSales(){
-        $sth = $this->db->query("SELECT * FROM sales");
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'Sale');
-        $sales = [];
-        while ($s = $sth->fetch()) {
-            $s->Services = $this->getSaleServs($s->Id);
-            $sales[] = $s;
+    public function getCrochets($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
         }
-        return $sales;
-    }
-    
-    public function getPrices(){
-        $sth = $this->db->query("SELECT * FROM prices");
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'Price');
-        $prices = [];
-        while ($s = $sth->fetch()) {
-            $s->Services = $this->getPriceServs($s->Id);
-            $prices[] = $s;
-        }
-        return $prices;
+        $sth = $this->db->query("SELECT * FROM crochets");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Crochet');
+        return $sth->fetchAll();
     }
 
-    public function getJobs(){
-        $sth = $this->db->query("SELECT * FROM jobs");
-        $sth->setFetchMode(PDO::FETCH_CLASS, 'Job');
-        $jobs = [];
-        while ($j = $sth->fetch()) {
-            $j->Requirements = $this->getJobReqs($j->Id);
-            $jobs[] = $j;
+    public function getMethods($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
         }
-        return $jobs;
-    }
-    
-    private function getSaleServs($sid){
-        $s = $this->db->prepare("SELECT ser.Id as Id, ser.Name as Name, ser.Description as Description, ser.Price as Price from (sales sale RIGHT join saleservice ss ON sale.Id = ss.SaleId) LEFT JOIN services ser ON ser.Id = ss.ServiceId WHERE sale.Id=?");
-        $s->execute(array($sid));
-        $s->setFetchMode(PDO::FETCH_CLASS, 'Service');
-        return $s->fetchAll();
-    }
-    
-    private function getPriceServs($pid){
-        $s = $this->db->prepare("SELECT ser.Id as Id, ser.Name as Name, ser.Description as Description, ser.Price as Price from (prices price RIGHT join priceservice ps ON price.Id = ps.PriceId) LEFT JOIN services ser ON ser.Id = ps.ServiceId WHERE price.Id=?");
-        $s->execute(array($pid));
-        $s->setFetchMode(PDO::FETCH_CLASS, 'Service');
-        return $s->fetchAll();
+        $sth = $this->db->query("SELECT * FROM methods");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Method');
+        return $sth->fetchAll();
     }
 
-    private function getJobReqs($jid){
-        $s = $this->db->prepare("SELECT req.Id as Id, req.Description as Description from (jobs job RIGHT join jobrequirement jr ON job.Id = jr.JobId) LEFT JOIN requirements req ON req.Id = jr.RequirementId WHERE job.Id=?");
-        $s->execute(array($jid));
-        $s->setFetchMode(PDO::FETCH_CLASS, 'Requirement');
-        return $s->fetchAll();
+    public function getAuthors($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->query("SELECT * FROM authors");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Author');
+        return $sth->fetchAll();
+    }
+    
+    public function getGrowings($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->query("SELECT * FROM growings");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Growing');
+        return $sth->fetchAll();
     }
 
-    public function addUser($user){
-        $user['Password'] = md5(md5($user['Password']));
-        $res = $this->genInsertQuery($user,"users");
+    public function getExperiments($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->query("SELECT * FROM experiments");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Experiment');
+        return $sth->fetchAll();
+    }
+
+    public function getInventory($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->query("SELECT * FROM inventory");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Inventory');
+        return $sth->fetchAll();
+    }
+
+    public function getCatalog($l, $p){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->query("SELECT * FROM catalog_of_solids");
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Catalog');
+        return $sth->fetchAll();
+    }
+
+    private function getSolidPeriodicals($id){
+        $sth = $this->db->prepare("SELECT * FROM periodicals_catalog pc JOIN periodicals p ON pc.id_period=p.id_periodicals WHERE id_solid=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Periodical');
+        return $sth->fetchAll();
+    }
+
+    private function getCrochet($id){
+        $sth = $this->db->prepare("SELECT * FROM crochets WHERE id_crochet=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Crochet');
+        return $sth->fetch();
+    }
+
+    private function getMethod($id){
+        $sth = $this->db->prepare("SELECT * FROM methods WHERE id_crochet=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Method');
+        return $sth->fetch();
+    }
+
+    private function getSolid($id){
+        $sth = $this->db->prepare("SELECT * FROM solids WHERE id_solid=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Solid');
+        return $sth->fetch();
+    }
+
+    private function getPeriodicalAuthors($id){
+        $sth = $this->db->prepare("SELECT * FROM periodic_author pa JOIN authors a ON pa.id_author=a.id_authors WHERE id_Periodic=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Author');
+        return $sth->fetchAll();
+    }
+
+    private function getExperimentInventory($id){
+        $sth = $this->db->prepare("SELECT * FROM exp_inv ei JOIN invetory i ON ei.id_inv=i.id_invetory WHERE id_exp=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Inventory');
+        return $sth->fetchAll();
+    }
+
+    private function getPeriodicalSolids($id){
+        $sth = $this->db->prepare("SELECT * FROM periodicals_catalog pc JOIN solids s ON pc.id_solid =s.id_solids WHERE id_period=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Solid');
+        return $sth->fetchAll();
+    }
+
+    // ------------------------       Запросы на добавление данных в базу      ------------------------
+    
+
+    public function addSolid($l, $p, $solid){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($solid,"solids");
         $s = $this->db->prepare($res[0]);
-        
-        
-        return $this->getUserById($this->db->lastInsertId());
-    }
-
-    public function getUser($e, $p){
-        $s = $this->db->prepare("SELECT Id, Name, Email FROM users WHERE Email=? and Password=?");
-        $s->execute(array($e, md5(md5($p))));
-        $s->setFetchMode(PDO::FETCH_CLASS, 'User');
-        $u=$s->fetch();
-        $token = null;
-        if($u){
-            $token = md5(md5(md5($p)).rand(1000,9999));
-            $this->setToken($u->Id, $token);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
         }
-        return array($u, $token);
+        return $this->db->lastInsertId();
     }
 
-    private function setToken($uid, $token){
-        $s = $this->db->prepare('UPDATE users SET Token=? WHERE Id=?');
-        $s->execute(array($token, $uid));
+    public function addCrochet($l, $p, $crochet){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($crochet,"crochets");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+    
+    public function addInventory($l, $p, $inv){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($inv,"invetory");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
     }
 
-    private function getUserById($id){
-        $s = $this->db->prepare("SELECT Id, Name, Email, Password FROM users WHERE Id=?");
-        $s->execute(array($id));
-        $s->setFetchMode(PDO::FETCH_CLASS, 'User');
-        $u=$s->fetch();
-        $token = md5($u->Password.rand(1000,9999));
-        $this->setToken($u->Id, $token);
-        unset($u->Password);
+    public function addAuthor($l, $p, $auth){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($auth,"authors");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    public function addMethod($l, $p, $meth){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($meth,"methods");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    public function addPeriodical($l, $p, $per){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($per,"periodicals");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    private function addPeriodicalSolid($l, $p, $solid){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($solid,"periodicals_catalog");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    private function addPeriodicalAuthor($l, $p, $auth){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($auth,"periodic_author");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    public function addGrowing($l, $p, $gr){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($gr,"growings");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    public function addSolidCatalog($l, $p, $solid){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($solid,"catalog_of_solids");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    public function addExperiment($l, $p, $ex){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($ex,"experiments");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+
+    private function addExperimentInventory($l, $p, $inv){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $res = $this->genInsertQuery($inv,"exp_inv");
+        $s = $this->db->prepare($res[0]);
+        if($res[1][0]!=null){
+            $s->execute($res[1]);
+        }
+        return $this->db->lastInsertId();
+    }
+    
+    // ------------------------       Запросы на изменение данных в базе       ------------------------
+    
+    public function updateNews($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "news", $id);
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Вход админа
+     * 
+     * Проверка корректности логина и пароля
+     * @param string $l логин админа
+     * @param string $p пароль админа
+     * @return boolean true - данные корректны
+     */
+    public function enterAdmin($l, $p){
         
-        return array($u,$token);
+        return $this->checkAdmin($l, $p);
+    }
+
+    /**
+     * Вход админа
+     * 
+     * Проверка корректности логина и пароля
+     * @param string $l логин админа
+     * @param string $p пароль админа
+     * @return boolean true - данные корректны
+     */
+    private function checkAdmin($l, $p){
+        
+        $access = file("user.php"); 
+        $login = trim($access[1]); 
+        $passw = trim($access[2]); 
+        if($l==$login && $p==$passw){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
