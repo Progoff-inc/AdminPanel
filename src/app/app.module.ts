@@ -23,6 +23,10 @@ import { LoadComponent } from './load/load.component';
 import { LoadService } from './services/load.service';
 import { HomeComponent } from './home/home.component';
 import { UserService } from './services/user.service';
+import { ExperimentsComponent } from './experiments/experiments.component';
+import { PeriodicalsComponent } from './periodicals/periodicals.component';
+import { GrowingsComponent } from './growings/growings.component';
+import { AdminService } from './services/admin.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,10 @@ import { UserService } from './services/user.service';
     MenuComponent,
     ModalComponent,
     LoadComponent,
-    HomeComponent
+    HomeComponent,
+    ExperimentsComponent,
+    PeriodicalsComponent,
+    GrowingsComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +50,7 @@ import { UserService } from './services/user.service';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [FormBuilder, HttpClient, ModalService, BsModalService, UserService, LoadService],
+  providers: [FormBuilder, HttpClient, ModalService, BsModalService, UserService, LoadService, AdminService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

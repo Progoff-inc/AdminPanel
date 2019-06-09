@@ -1,5 +1,5 @@
 import { Good, NewUser, User, UserInfo, UserResponse } from './models';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { CartItem } from './models';
 import { HttpClient } from '@angular/common/http';
@@ -9,8 +9,9 @@ import { LoadService } from './load.service';
 
 @Injectable()
 export class UserService{
-    public user:User;
+    public user:any;
     token:string;
+    showContent=false;
     users:User[] = [];
     baseUrl:string='http://client.nomokoiw.beget.tech/admin/';
 
@@ -19,22 +20,51 @@ export class UserService{
         // localStorage.removeItem('userAdminPanel');
         if(sessionStorage.getItem('userAdminPanel')){
             let u = JSON.parse(sessionStorage.getItem('userAdminPanel'));
-            this.signIn(u.Email, u.Password).subscribe(data => {
-                this.User = data;
-                this.save();
+            this.signIn(u.Login, u.Password).subscribe(data => {
+                if(data){
+                    this.user = {Login:u.Login, Password:u.Password};
+                    this.save();
+                    this.router.events.subscribe(evt => {
+                        if (!(evt instanceof NavigationEnd)) {
+                            return;
+                        }
+                        if(!this.user){
+                            this.router.navigate(['sign']);
+                        }
+                    })
+                }else{
+                    this.router.navigate(['sign']);
+                }
+                this.showContent = true;
+                
             })
             
         }
         else if(localStorage.getItem('userAdminPanel')){
             let u = JSON.parse(localStorage.getItem('userAdminPanel'));
-            this.signIn(u.Email, u.Password).subscribe(data => {
-                this.User = data;
-                this.save();
+            this.signIn(u.Login, u.Password).subscribe(data => {
+                if(data){
+                    this.user = {Login:u.Login, Password:u.Password};
+                    this.save();
+                    this.router.events.subscribe(evt => {
+                        if (!(evt instanceof NavigationEnd)) {
+                            return;
+                        }
+                        if(!this.user){
+                            this.router.navigate(['sign']);
+                        }
+                    })
+                }else{
+                    this.router.navigate(['sign']);
+                }
+                this.showContent = true;
             })
             
         }else{
             this.router.navigate(['sign']);
         }
+
+        
     }
 
     set User(User:UserResponse){
@@ -42,13 +72,20 @@ export class UserService{
         this.token = User.Token; 
     }
 
+    exit(){
+        this.user = null;
+        sessionStorage.removeItem('userAdminPanel');
+        localStorage.removeItem('userAdminPanel');
+        this.router.navigate(['sign']);
+    }
+
     /**
      * Авторизация пользователя
-     * @param email Email пользовтеля
+     * @param login login пользовтеля
      * @param password Пароль пользователя
      */
-    public signIn(email:string, password:string){
-        return this.http.get<UserResponse>(this.baseUrl + 'UserController.php?Key=get-user&Email='+email+'&Password='+password);
+    public signIn(login:string, password:string){
+        return this.http.get<UserResponse>(this.baseUrl + 'controller.php?Key=enter&Login='+login+'&Password='+password);
     }
 
     /**

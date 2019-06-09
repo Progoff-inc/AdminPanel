@@ -1,6 +1,16 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<div class="menu" *ngIf="us.user">
+    <div class="user">
+        <p class="mb-0">Администратор</p>
+        <small (click)="us.exit()">Выйти</small>
+    </div>
+    <div class="pt-2">
+        <app-menu></app-menu>
+    </div>
+</div>
+<div *ngIf="us.showContent" class="content" [ngClass]="{'ml-0': !us.user}">
+    <router-outlet></router-outlet>
+</div>
 
 
-<router-outlet></router-outlet>
 <app-load></app-load>
 <app-modal></app-modal>

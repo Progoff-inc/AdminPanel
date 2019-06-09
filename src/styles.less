@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./colors.less";
+
+
+.header{
+    color: @dark-blue;
+    margin: 10px 0 20px 0;
+}
+
+.flex-container{
+    display: flex;
+    flex-wrap: wrap;
+    &>*{
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+.plus{
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover{
+        color: white;
+        
+        background-color: @light-blue;
+    }
+}

@@ -29,7 +29,7 @@ export class SignUpComponent implements OnInit {
     this.us.signUp(this.userForm.value).subscribe(data => {
       console.log(data);
       if(data){
-        this.us.User = data;
+        this.us.user = data;
         this.us.save(true);
         this.router.navigate(['/']);
       }

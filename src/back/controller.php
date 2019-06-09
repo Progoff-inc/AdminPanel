@@ -18,6 +18,9 @@ if(isset($_GET['Key']))
         case 'get-periodicals':
             echo json_encode($ctxt->getPeriodicals($_GET['Login'], $_GET['Password']));
             break;
+        case 'get-experiments':
+            echo json_encode($ctxt->getExperiments($_GET['Login'], $_GET['Password']));
+            break;
         case 'get-crochets':
             echo json_encode($ctxt->getCrochets($_GET['Login'], $_GET['Password']));
             break;
@@ -35,6 +38,9 @@ if(isset($_GET['Key']))
             break;
         case 'get-inventory':
             echo json_encode($ctxt->getInventory($_GET['Login'], $_GET['Password']));
+            break;
+        case 'enter':
+            echo json_encode($ctxt->enterAdmin($_GET['Login'], $_GET['Password']));
             break;
         case 'get-catalog':
             echo json_encode($ctxt->getCatalog($_GET['Login'], $_GET['Password']));

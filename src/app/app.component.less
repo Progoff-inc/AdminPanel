@@ -1,0 +1,38 @@
+@import "../colors.less";
+
+.menu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: @blue;
+    color: white;
+    .user{
+        padding-left: 10px;
+        padding-bottom: 5px;
+        small{
+            &:hover{
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+    }
+    .grab{
+        height: 30px;
+        width: 30px;
+        color: white;
+        background-color: @dark-blue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 50px;
+        right: -15px;
+        border-radius: 50%;
+    }
+}
+.content{
+    margin-left: 200px;
+    padding-left: 20px;
+}

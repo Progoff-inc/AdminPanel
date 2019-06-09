@@ -1,0 +1,31 @@
+
+<h3 class="header">Методы</h3>
+<div class="flex-container">
+  <div class="item" *ngFor="let s of methods">
+    <h4>{{s.name}}</h4>
+  </div>
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+      <i class="fas fa-plus"></i>
+  </div>
+</div>
+
+<h3 class="header">Выращиватели</h3>
+<div class="flex-container">
+  <div class="item" *ngFor="let s of crochets">
+    <h4>{{s.name}} {{s.surname}}</h4>
+    <small>{{s.position}}</small>
+  </div>
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+      <i class="fas fa-plus"></i>
+  </div>
+</div>
+<h3 class="header">Выращивания</h3>
+<div class="flex-container">
+  <div class="item" *ngFor="let s of growings">
+    <h4>{{s.crochet_name}} {{s.crochet_surname}}</h4>
+    <small>{{s.name}}</small>
+  </div>
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+      <i class="fas fa-plus"></i>
+  </div>
+</div>

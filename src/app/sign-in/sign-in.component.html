@@ -1,9 +1,9 @@
 <form [formGroup]="userForm" (ngSubmit)="signIn()">
     <h3 class="text-center" style="font-weight:400">Авторизация</h3>
     <div class="form-group">
-        <input [ngClass]="{'border-danger':(submitted && f.Email.errors)}" formControlName="Email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ваш email">
-        <small  class="form-text text-danger" *ngIf="submitted && f.Email.errors && f.Email.errors.required">Введите email</small>
-        <small id="emailHelp1" class="form-text text-danger" *ngIf="submitted && f.Email.errors && f.Email.errors.email">Некорректный email</small>
+        <input [ngClass]="{'border-danger':(submitted && f.Login.errors)}" formControlName="Login" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ваш логин">
+        <small  class="form-text text-danger" *ngIf="submitted && f.Login.errors && f.Login.errors.required">Введите логин</small>
+        
     </div>
     <div class="form-group">
         <input [ngClass]="{'border-danger':(submitted && f.Password.errors)}" formControlName="Password" type="password" class="form-control" placeholder="Пароль">
@@ -14,6 +14,6 @@
       <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
     </div>
     <button type="submit" class="btn btn-primary" (click)="signIn()">Войти</button>
-    <button class="btn btn-link" routerLink="/sign/up">Регистрация</button>
+    <!-- <button class="btn btn-link" routerLink="/sign/up">Регистрация</button> -->
   </form>
   

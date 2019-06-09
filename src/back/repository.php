@@ -195,7 +195,7 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
-        $sth = $this->db->query("SELECT * FROM growings");
+        $sth = $this->db->query("SELECT g.id_growing, g.comment, g.last_update, m.name, c.name as crochet_name, c.surname as crochet_surname FROM growings g JOIN methods m ON g.id_method=m.id_method JOIN crochets c ON g.id_crochet=c.id_crochet");
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Growing');
         return $sth->fetchAll();
     }
@@ -204,7 +204,7 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
-        $sth = $this->db->query("SELECT * FROM experiments");
+        $sth = $this->db->query("SELECT * FROM experiments c JOIN solids s ON c.id_solid=s.id_solids");
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Experiment');
         return $sth->fetchAll();
     }
@@ -222,7 +222,7 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
-        $sth = $this->db->query("SELECT * FROM catalog_of_solids");
+        $sth = $this->db->query("SELECT * FROM catalog_of_solids c JOIN solids s ON c.id_solids=s.id_solids");
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Catalog');
         return $sth->fetchAll();
     }
@@ -463,7 +463,7 @@ class DataBase {
         
         $access = file("user.php"); 
         $login = trim($access[1]); 
-        $passw = trim($access[2]); 
+        $passw = trim($access[2]);
         if($l==$login && $p==$passw){
             return true;
         }else{
