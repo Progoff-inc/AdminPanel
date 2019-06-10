@@ -61,7 +61,9 @@ export class UserService{
             })
             
         }else{
+
             this.router.navigate(['sign']);
+            this.showContent = true;
         }
 
         

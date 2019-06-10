@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../services/admin.service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-periodicals',
@@ -10,7 +11,7 @@ export class PeriodicalsComponent implements OnInit {
 
   authors = [];
   periodicals = [];
-  constructor(public as:AdminService) { }
+  constructor(public as:AdminService, public ms:ModalService) { }
 
   ngOnInit() {
     this.as.getAuthors().subscribe(s => {

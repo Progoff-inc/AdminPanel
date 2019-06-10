@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../services/admin.service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-growings',
@@ -11,7 +12,7 @@ export class GrowingsComponent implements OnInit {
   methods = [];
   crochets = [];
   growings = [];
-  constructor(public as:AdminService) { }
+  constructor(public as:AdminService, public ms:ModalService) { }
 
   ngOnInit() {
     this.as.getMethods().subscribe(s => {

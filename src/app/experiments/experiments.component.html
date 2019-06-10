@@ -4,7 +4,7 @@
     <h4>{{s.model}}</h4>
     <small>{{s.type}}</small>
   </div>
-  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" (click)="ms.open('add-inventory', inventory)">
       <i class="fas fa-plus"></i>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <img src="{{s.photo}}" alt="">
     <h4>{{s.name}}</h4>
   </div>
-  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" routerLink="/add/experiment">
       <i class="fas fa-plus"></i>
   </div>
 </div>

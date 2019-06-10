@@ -27,6 +27,16 @@ import { ExperimentsComponent } from './experiments/experiments.component';
 import { PeriodicalsComponent } from './periodicals/periodicals.component';
 import { GrowingsComponent } from './growings/growings.component';
 import { AdminService } from './services/admin.service';
+import { AddMethodComponent } from './add-method/add-method.component';
+import { AddCrochetComponent } from './add-crochet/add-crochet.component';
+import { AddSolidComponent } from './add-solid/add-solid.component';
+import { AddInventoryComponent } from './add-inventory/add-inventory.component';
+import { AddExperimentComponent } from './add-experiment/add-experiment.component';
+import { AddGrowingComponent } from './add-growing/add-growing.component';
+import { AddAuthorComponent } from './add-author/add-author.component';
+import { AddPeriodicalComponent } from './add-periodical/add-periodical.component';
+import { AddComponent } from './add/add.component';
+import { AddCatalogComponent } from './add-catalog/add-catalog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +50,17 @@ import { AdminService } from './services/admin.service';
     HomeComponent,
     ExperimentsComponent,
     PeriodicalsComponent,
-    GrowingsComponent
+    GrowingsComponent,
+    AddMethodComponent,
+    AddCrochetComponent,
+    AddSolidComponent,
+    AddInventoryComponent,
+    AddExperimentComponent,
+    AddGrowingComponent,
+    AddAuthorComponent,
+    AddPeriodicalComponent,
+    AddComponent,
+    AddCatalogComponent
   ],
   imports: [
     BrowserModule,

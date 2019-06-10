@@ -7,10 +7,22 @@ import { HomeComponent } from './home/home.component';
 import { ExperimentsComponent } from './experiments/experiments.component';
 import { PeriodicalsComponent } from './periodicals/periodicals.component';
 import { GrowingsComponent } from './growings/growings.component';
+import { AddCatalogComponent } from './add-catalog/add-catalog.component';
+import { AddGrowingComponent } from './add-growing/add-growing.component';
+import { AddExperimentComponent } from './add-experiment/add-experiment.component';
+import { AddPeriodicalComponent } from './add-periodical/add-periodical.component';
+import { AddComponent } from './add/add.component';
 
 const signRouts: Routes = [
   { path: '', component: SignInComponent, pathMatch: 'full'},
   { path: 'up', component: SignUpComponent}
+  
+]
+const addRouts: Routes = [
+  { path: '', component: AddCatalogComponent, pathMatch: 'full'},
+  { path: 'growing', component: AddGrowingComponent},
+  { path: 'experiment', component: AddExperimentComponent},
+  { path: 'periodical', component: AddPeriodicalComponent}
   
 ]
 const routes: Routes = [
@@ -18,7 +30,8 @@ const routes: Routes = [
   { path: 'sign', component: SignComponent, children: signRouts },
   { path: 'experiments', component: ExperimentsComponent },
   { path: 'periodicals', component: PeriodicalsComponent },
-  { path: 'growings', component: GrowingsComponent}
+  { path: 'growings', component: GrowingsComponent},
+  { path: 'add', component: AddComponent, children: addRouts}
 ];
 
 @NgModule({

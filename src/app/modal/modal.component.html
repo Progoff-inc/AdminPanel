@@ -1,7 +1,11 @@
 <ng-template class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" #modal>
 
   <div class="p-3">
-    
+    <add-author *ngIf="ms.type=='add-author'" [items]='ms.inpt'></add-author>
+    <add-inventory *ngIf="ms.type=='add-inventory'" [items]='ms.inpt'></add-inventory>
+    <add-method *ngIf="ms.type=='add-method'" [items]='ms.inpt'></add-method>
+    <add-crochet *ngIf="ms.type=='add-crochet'" [items]='ms.inpt'></add-crochet>
+    <add-solid *ngIf="ms.type=='add-solid'" [items]='ms.inpt'></add-solid>
   </div>
   
   

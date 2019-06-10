@@ -3,7 +3,7 @@
   <div class="item" *ngFor="let s of authors">
     <h4>{{s.name}}</h4>
   </div>
-  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" (click)="ms.open('add-author', authors)">
       <i class="fas fa-plus"></i>
   </div>
 </div>
@@ -14,7 +14,7 @@
     <h4>{{s.name}}</h4>
     <small>{{s.type}}</small>
   </div>
-  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" [routerLink]="['/add/periodical']">
       <i class="fas fa-plus"></i>
   </div>
 </div>

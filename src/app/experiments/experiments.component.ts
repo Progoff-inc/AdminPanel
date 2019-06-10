@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../services/admin.service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-experiments',
@@ -9,7 +10,7 @@ import { AdminService } from '../services/admin.service';
 export class ExperimentsComponent implements OnInit {
   inventory = [];
   experiments = [];
-  constructor(public as:AdminService) { }
+  constructor(public as:AdminService, public ms:ModalService) { }
 
   ngOnInit() {
     this.as.getInventory().subscribe(s => {

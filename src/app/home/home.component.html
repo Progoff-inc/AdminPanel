@@ -4,7 +4,7 @@
     <h4>{{s.name}}</h4>
     <small>{{s.id_type}}</small>
   </div>
-  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" (click)="ms.open('add-solid', solids)">
       <i class="fas fa-plus"></i>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <img src="{{s.foto_of_range}}" alt="">
     <h4>{{s.name}}</h4>
   </div>
-  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px">
+  <div class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" routerLink="add">
       <i class="fas fa-plus"></i>
   </div>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AdminService } from '../services/admin.service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { AdminService } from '../services/admin.service';
 export class HomeComponent implements OnInit {
   solids = [];
   catalog = [];
-  constructor(private router:Router, public as:AdminService) { }
+  constructor(private router:Router, public as:AdminService, public ms:ModalService) { }
 
   ngOnInit() {
     this.as.getSolids().subscribe(s => {
