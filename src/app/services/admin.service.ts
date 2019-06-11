@@ -1,7 +1,6 @@
-import { Good, NewUser, User, UserInfo, UserResponse } from './models';
+
 import { Router, NavigationEnd } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { CartItem } from './models';
 import { HttpClient } from '@angular/common/http';
 import { ModalService } from './modal.service';
 import { LoadService } from './load.service';
@@ -11,7 +10,6 @@ import { UserService } from './user.service';
 @Injectable()
 export class AdminService{
     token:string;
-    users:User[] = [];
     baseUrl:string='http://client.nomokoiw.beget.tech/admin/';
 
     constructor(private router:Router, private http: HttpClient, private ls:LoadService, private us:UserService){
@@ -57,12 +55,9 @@ export class AdminService{
     public getCrochets(){
         return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-crochets&Login='+this.us.user.Login+'&Password='+this.us.user.Password);
     }
-    /**
-     * Регистрация пользователя
-     * @param user Новый пользователь
-     */
-    public signUp(user:any){
-        return this.http.post<UserResponse>(this.baseUrl + 'UserController.php?Key=add-user', user);
+
+    public addSolid(solid){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-solid&Login='+this.us.user.Login+'&Password='+this.us.user.Password, solid);
     }
 }
 

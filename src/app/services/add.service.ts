@@ -9,4 +9,7 @@ export class AddService{
     constructor(){
 
     }
+
+    get f() { return this.addForm.controls; }
+    get v() { return this.addForm.value; }
 }
