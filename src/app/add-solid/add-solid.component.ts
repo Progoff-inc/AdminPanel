@@ -12,6 +12,7 @@ import { ModalService } from '../services/modal.service';
 })
 export class AddSolidComponent extends AddService implements OnInit {
   @Input() items:any;
+ 
   constructor(private as:AdminService, private ms:ModalService) { 
     super();
   }
@@ -21,11 +22,14 @@ export class AddSolidComponent extends AddService implements OnInit {
       name: ['', Validators.required],
       formulae: ['', Validators.required],
       id_type: ['', Validators.required]
-
     });
   }
 
   send(){
+    this.submitted = true;
+    if(this.addForm.invalid){
+      return;
+    }
     this.as.addSolid(this.v).subscribe(x => {
       let s = this.v;
       s['id_solids']=x;

@@ -59,5 +59,21 @@ export class AdminService{
     public addSolid(solid){
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-solid&Login='+this.us.user.Login+'&Password='+this.us.user.Password, solid);
     }
+
+    public addMethod(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-method&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public addInventory(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-inventory&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public addAuthor(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-author&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public addCrochet(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-crochet&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
 }
 

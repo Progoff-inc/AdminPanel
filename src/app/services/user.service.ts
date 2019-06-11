@@ -1,7 +1,6 @@
-import { Good, NewUser, User, UserInfo, UserResponse } from './models';
+
 import { Router, NavigationEnd } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { CartItem } from './models';
 import { HttpClient } from '@angular/common/http';
 import { ModalService } from './modal.service';
 import { LoadService } from './load.service';
@@ -12,7 +11,6 @@ export class UserService{
     public user:any;
     token:string;
     showContent=false;
-    users:User[] = [];
     baseUrl:string='http://client.nomokoiw.beget.tech/admin/';
 
     constructor(private router:Router, private http: HttpClient, private ls:LoadService){
@@ -69,7 +67,7 @@ export class UserService{
         
     }
 
-    set User(User:UserResponse){
+    set User(User:any){
         this.user = User.User;
         this.token = User.Token; 
     }
@@ -87,7 +85,7 @@ export class UserService{
      * @param password Пароль пользователя
      */
     public signIn(login:string, password:string){
-        return this.http.get<UserResponse>(this.baseUrl + 'controller.php?Key=enter&Login='+login+'&Password='+password);
+        return this.http.get<any>(this.baseUrl + 'controller.php?Key=enter&Login='+login+'&Password='+password);
     }
 
     /**
@@ -95,7 +93,7 @@ export class UserService{
      * @param user Новый пользователь
      */
     public signUp(user:any){
-        return this.http.post<UserResponse>(this.baseUrl + 'UserController.php?Key=add-user', user);
+        return this.http.post<any>(this.baseUrl + 'UserController.php?Key=add-user', user);
     }
 
     /**

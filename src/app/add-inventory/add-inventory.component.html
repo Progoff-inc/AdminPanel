@@ -1,3 +1,37 @@
-<p>
-  add-inventory works!
-</p>
+<form [formGroup]="addForm">
+  <h3 class="d-flex justify-content-between align-items-center" style="font-weight:400">Отправление заявки<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.type.errors)}">Тип оборудования*</label>
+    <input [ngClass]="{'border-danger':(submitted && f.type.errors)}" formControlName="type" class="form-control" id="na" placeholder="Тип оборудования">
+    <small  class="form-text text-danger" *ngIf="submitted && f.type.errors && f.type.errors.required">Введите тип оборудования</small>
+  </div>
+  <div class="form-group">
+      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.model.errors)}">Модель оборудования*</label>
+      <input [ngClass]="{'border-danger':(submitted && f.model.errors)}" formControlName="model" class="form-control" id="exampleInputEmail1" placeholder="Модель оборудования">
+      <small  class="form-text text-danger" *ngIf="submitted && f.model.errors && f.model.errors.required">Введите модель оборудования</small>
+  </div>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.date_of_issue.errors)}">Дата выдачи*</label>
+    <input [ngClass]="{'border-danger':(submitted && f.date_of_issue.errors)}" formControlName="date_of_issue" type="date" class="form-control" id="na" >
+    <small  class="form-text text-danger" *ngIf="submitted && f.date_of_issue.errors && f.date_of_issue.errors.required">Введите дату выдачи</small>
+  </div>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.value.errors)}">Количество оборудования*</label>
+    <input [ngClass]="{'border-danger':(submitted && f.value.errors)}" formControlName="value" type="number" class="form-control" id="na" placeholder="Количество оборудования">
+    <small  class="form-text text-danger" *ngIf="submitted && f.value.errors && f.value.errors.required">Введите количество оборудования</small>
+  </div>
+  
+  <div class="form-group">
+    <label [ngClass]="{'text-danger':(submitted && f.technical_documentation.errors)}" for="DES">Техническая документация*</label>
+    <select [ngClass]="{'border-danger':(submitted && f.technical_documentation.errors)}" formControlName="technical_documentation" class="form-control" rows="5" id="DES" >
+      <option value="Да">Да</option>
+      <option value="Нет">Нет</option>
+    </select>
+    <small  class="form-text text-danger" *ngIf="submitted && f.technical_documentation.errors && f.technical_documentation.errors.required">Уточните наличие документации</small>
+  </div>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.information.errors)}">Информация</label>
+    <input [ngClass]="{'border-danger':(submitted && f.information.errors)}" formControlName="information" class="form-control" id="na" placeholder="Информация">
+  </div>
+  <button class="btn btn-primary" (click)="send()">Отправить</button>
+</form>

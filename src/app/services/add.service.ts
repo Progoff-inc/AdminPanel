@@ -6,6 +6,7 @@ import { Validators } from '@angular/forms';
 export class AddService{
     public addForm:FormGroup;
     public fb:FormBuilder = new FormBuilder();
+    public submitted = false;
     constructor(){
 
     }

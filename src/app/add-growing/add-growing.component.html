@@ -1,3 +1,27 @@
-<p>
-  add-growing works!
-</p>
+<form [formGroup]="addForm">
+  <h3 class="d-flex justify-content-between align-items-center" style="font-weight:400">Отправление заявки<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.name.errors)}">Название</label>
+    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Название кристалла">
+    <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите название кристалла</small>
+  </div>
+  <div class="form-group">
+      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.formulae.errors)}">Формула кристалла</label>
+      <input [ngClass]="{'border-danger':(submitted && f.formulae.errors)}" formControlName="formulae" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Формула кристалла">
+      <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small>
+  </div>
+  <!-- <div class="form-group">
+      <label for="exampleInputPhone1" [ngClass]="{'text-danger':(submitted && f.Phone.errors)}">Телефон</label>
+      <input [ngClass]="{'border-danger':(submitted && f.Phone.errors)}" formControlName="Phone" type="tel" pattern="\d[0-9]{5,}" class="form-control" id="exampleInputPhone1"  placeholder="Ваш  телефон">
+      <small  class="form-text text-danger" *ngIf="submitted && f.Phone.errors && f.Phone.errors.required">Введите телефон</small>
+      <small  class="form-text text-danger" *ngIf="submitted && f.Phone.errors && f.Phone.errors.pattern">Некорректный телефон</small>
+  </div> -->
+  <div class="form-group">
+      <label [ngClass]="{'text-danger':(submitted && f.id_type.errors)}" for="DES">Тип кристалла</label>
+      <select [ngClass]="{'border-danger':(submitted && f.id_type.errors)}" formControlName="id_type" class="form-control" rows="5" id="DES" >
+        <option value="{{s}}" *ngFor="let s of st">{{s}}</option>
+      </select>
+      <small  class="form-text text-danger" *ngIf="submitted && f.id_type.errors && f.id_type.errors.required">Введите тип кристалла</small>
+  </div>
+  <button class="btn btn-primary" (click)="send()">Отправить</button>
+</form>
