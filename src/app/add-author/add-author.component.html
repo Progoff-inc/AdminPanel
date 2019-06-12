@@ -5,5 +5,15 @@
     <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Имя автора">
     <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите имя автора</small>
   </div>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.surname.errors)}">Фамилия*</label>
+    <input [ngClass]="{'border-danger':(submitted && f.surname.errors)}" formControlName="surname" class="form-control" id="na" placeholder="Фамилия автора">
+    <small  class="form-text text-danger" *ngIf="submitted && f.surname.errors && f.surname.errors.required">Введите фамилию автора</small>
+  </div>
+  <div class="form-group">
+      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.second_name.errors)}">Отчество</label>
+      <input [ngClass]="{'border-danger':(submitted && f.second_name.errors)}" formControlName="second_name" class="form-control" id="exampleInputEmail1"  placeholder="Отчество автора">
+      <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
+  </div>
   <button class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

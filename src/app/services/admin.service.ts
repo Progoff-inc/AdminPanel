@@ -75,5 +75,13 @@ export class AdminService{
     public addCrochet(enter){
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-crochet&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
     }
+
+    public addGrowing(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-growing&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public addPeriodical(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-periodical&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
 }
 

@@ -1,33 +1,33 @@
 <form [formGroup]="addForm">
-  <h3 class="d-flex justify-content-between align-items-center" style="font-weight:400">Добавление вязального<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
+  <h3 class="d-flex justify-content-between align-items-center" style="font-weight:400">Добавление выращивателя<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
   <div class="form-group">
     <label for="na" [ngClass]="{'text-danger':(submitted && f.name.errors)}">Имя*</label>
-    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Имя вязального">
-    <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите имя вязального</small>
+    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Имя выращивателя">
+    <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите имя выращивателя</small>
   </div>
   <div class="form-group">
     <label for="na" [ngClass]="{'text-danger':(submitted && f.surname.errors)}">Фамилия*</label>
     <input [ngClass]="{'border-danger':(submitted && f.surname.errors)}" formControlName="surname" class="form-control" id="na" placeholder="Фамилия вязального">
-    <small  class="form-text text-danger" *ngIf="submitted && f.surname.errors && f.surname.errors.required">Введите фамилию вязального</small>
+    <small  class="form-text text-danger" *ngIf="submitted && f.surname.errors && f.surname.errors.required">Введите фамилию выращивателя</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.second_name.errors)}">Отчество</label>
-      <input [ngClass]="{'border-danger':(submitted && f.second_name.errors)}" formControlName="second_name" class="form-control" id="exampleInputEmail1"  placeholder="Отчество вязального">
+      <input [ngClass]="{'border-danger':(submitted && f.second_name.errors)}" formControlName="second_name" class="form-control" id="exampleInputEmail1"  placeholder="Отчество выращивателя">
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.work_place.errors)}">Место работы</label>
-      <input [ngClass]="{'border-danger':(submitted && f.work_place.errors)}" formControlName="work_place" class="form-control" id="exampleInputEmail1"  placeholder="Место работы вязального">
+      <input [ngClass]="{'border-danger':(submitted && f.work_place.errors)}" formControlName="work_place" class="form-control" id="exampleInputEmail1"  placeholder="Место работы выращивателя">
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.position.errors)}">Позиция</label>
-      <input [ngClass]="{'border-danger':(submitted && f.position.errors)}" formControlName="position" class="form-control" id="exampleInputEmail1"  placeholder="Позиция вязального">
+      <input [ngClass]="{'border-danger':(submitted && f.position.errors)}" formControlName="position" class="form-control" id="exampleInputEmail1"  placeholder="Позиция выращивателя">
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.rank.errors)}">Ранг</label>
-      <input [ngClass]="{'border-danger':(submitted && f.rank.errors)}" formControlName="rank" class="form-control" id="exampleInputEmail1"  placeholder="Ранг вязального">
+      <input [ngClass]="{'border-danger':(submitted && f.rank.errors)}" formControlName="rank" class="form-control" id="exampleInputEmail1"  placeholder="Ранг выращивателя">
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   

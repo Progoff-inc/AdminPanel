@@ -18,7 +18,9 @@ export class AddAuthorComponent extends AddService implements OnInit{
 
   ngOnInit() {
     this.addForm = this.fb.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      second_name: ['']
     });
   }
 
