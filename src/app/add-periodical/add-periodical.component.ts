@@ -58,11 +58,16 @@ export class AddPeriodicalComponent extends AddService implements OnInit {
     if(this.addForm.invalid){
       return;
     }
+    if(this.pauthors.length==0 || this.psolids.length==0){
+      return
+    }
     let p = this.v;
     p['Solids']=this.psolids;
     p['Authors']=this.pauthors;
     this.as.addPeriodical(p).subscribe(x => {
       this.addForm.reset();
+      this.pauthors=[];
+      this.psolids=[];
       this.submitted = false;
     })
   }

@@ -307,7 +307,7 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
-        $res = $this->genInsertQuery($inv,"invetory");
+        $res = $this->genInsertQuery($inv,"inventory");
         $s = $this->db->prepare($res[0]);
         if($res[1][0]!=null){
             $s->execute($res[1]);
@@ -343,12 +343,25 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
+        $solids = $per['Solids'];
+        $authors = $per['Authors'];
+        unset($per['Solids']);
+        unset($per['Authors']);
         $res = $this->genInsertQuery($per,"periodicals");
         $s = $this->db->prepare($res[0]);
         if($res[1][0]!=null){
             $s->execute($res[1]);
         }
-        return $this->db->lastInsertId();
+        $id = $this->db->lastInsertId();
+        for($i = 0; $i<count($solids); $i++){
+            $solids[$i]['id_period']=$id;
+            $this->addPeriodicalSolid($l, $p, $solids[$i]);
+        }
+        for($i = 0; $i<count($authors); $i++){
+            $authors[$i]['id_Periodic']=$id;
+            $this->addPeriodicalAuthor($l, $p, $authors[$i]);
+        }
+        return $id;
     }
 
     private function addPeriodicalSolid($l, $p, $solid){
