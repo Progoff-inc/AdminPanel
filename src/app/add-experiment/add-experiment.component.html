@@ -1,27 +1,50 @@
-<form [formGroup]="addForm">
-  <h3 class="d-flex justify-content-between align-items-center" style="font-weight:400">Добавление эксперимента<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
+<form [formGroup]="addForm" class="mb-4">
+  <h3 class="header d-flex justify-content-between align-items-center" style="font-weight:400">Добавление эксперимента<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
+  
   <div class="form-group">
-    <label for="na" [ngClass]="{'text-danger':(submitted && f.name.errors)}">Название</label>
-    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Название кристалла">
-    <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите название кристалла</small>
-  </div>
-  <div class="form-group">
-      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.formulae.errors)}">Формула кристалла</label>
-      <input [ngClass]="{'border-danger':(submitted && f.formulae.errors)}" formControlName="formulae" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Формула кристалла">
-      <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small>
-  </div>
-  <!-- <div class="form-group">
-      <label for="exampleInputPhone1" [ngClass]="{'text-danger':(submitted && f.Phone.errors)}">Телефон</label>
-      <input [ngClass]="{'border-danger':(submitted && f.Phone.errors)}" formControlName="Phone" type="tel" pattern="\d[0-9]{5,}" class="form-control" id="exampleInputPhone1"  placeholder="Ваш  телефон">
-      <small  class="form-text text-danger" *ngIf="submitted && f.Phone.errors && f.Phone.errors.required">Введите телефон</small>
-      <small  class="form-text text-danger" *ngIf="submitted && f.Phone.errors && f.Phone.errors.pattern">Некорректный телефон</small>
-  </div> -->
-  <div class="form-group">
-      <label [ngClass]="{'text-danger':(submitted && f.id_type.errors)}" for="DES">Тип кристалла</label>
-      <select [ngClass]="{'border-danger':(submitted && f.id_type.errors)}" formControlName="id_type" class="form-control" rows="5" id="DES" >
-        <option value="{{s}}" *ngFor="let s of st">{{s}}</option>
+      <label [ngClass]="{'text-danger':(submitted && f.id_solid.errors)}" for="DES">Кристалл</label>
+      <select [ngClass]="{'border-danger':(submitted && f.id_solid.errors)}" formControlName="id_solid" class="form-control"  id="DES" >
+        <option value="{{s.id_solids}}" *ngFor="let s of solids">{{s.name}}</option>
       </select>
-      <small  class="form-text text-danger" *ngIf="submitted && f.id_type.errors && f.id_type.errors.required">Введите тип кристалла</small>
+      <small  class="form-text text-danger" *ngIf="submitted && f.id_solid.errors && f.id_solid.errors.required">Укажите кристалл</small>
   </div>
+  <div class="form-group">
+    <label for="na" [ngClass]="{'text-danger':(submitted && f.conditions.errors)}">Условия</label>
+    <input [ngClass]="{'border-danger':(submitted && f.conditions.errors)}" formControlName="conditions" class="form-control" id="na" placeholder="Условия проведения">
+    <small  class="form-text text-danger" *ngIf="submitted && f.conditions.errors && f.conditions.errors.required">Введите условия</small>
+  </div>
+  <div class="form-group d-flex flex-column align-items-start">
+      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.photo.errors)}">Фотография</label>
+      <span>{{v.photo==''?'':getValue(v.photo)}}<button class="btn btn-link" (click)="photo.click()">{{v.photo==''?'Загрузить':'Изменить'}} фотографию</button></span>
+      
+      <input class="d-none" id='photo' type="file" (change)="setFile($event)" formControlName="photo" #photo>
+      <small  class="form-text text-danger" *ngIf="submitted && f.photo.errors && f.photo.errors.pattern">Файл с расширением .png или .jpg</small>
+  </div>
+  <div class="form-group">
+      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.rng.errors)}">Диапазон</label>
+      <input [ngClass]="{'border-danger':(submitted && f.rng.errors)}" formControlName="rng"  class="form-control" placeholder="Код">
+      <small  class="form-text text-danger" *ngIf="submitted && f.rng.errors && f.rng.errors.required">Введите диапазон</small>
+  </div>
+  <div class="form-group d-flex flex-column align-items-start">
+      <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.table_of_frequency.errors)}">Исследование</label>
+      <span>{{v.table_of_frequency==''?'':getValue(v.table_of_frequency)}}<button class="btn btn-link" (click)="table_of_frequency.click()">{{v.table_of_frequency==''?'Загрузить':'Изменить'}} файл исследования</button></span>
+      <input class="d-none" id='table_of_frequency' type="file" (change)="setFile($event)" formControlName="table_of_frequency" #table_of_frequency>
+      <small  class="form-text text-danger" *ngIf="submitted && f.table_of_frequency.errors && f.table_of_frequency.errors.pattern">Файл с расширением .doc, .docx, .pdf или .xlsx</small>
+  </div>
+  
+  <h3 class="header">Инвентарь</h3>
+  <div class="flex-container mb-3">
+    <div class="item" *ngFor="let e of einventory">
+      <label for="exampleInputEmail1">Предмет инвентаря</label>
+      <select class="form-control" rows="5" id="DES" [(ngModel)]="e.id_inv" [ngModelOptions]="{standalone: true}">
+        <option value="{{s.id_invetory}}" *ngFor="let s of inventory" [disabled]="ps.indexOf(s.id_invetory)>-1">{{s.model}}</option>
+      </select>
+    </div>
+    <div *ngIf="einventory.length!=inventory.length" class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" (click)="addInv()">
+        <i class="fas fa-plus"></i>
+    </div>
+  </div>
+  <small  class="form-text text-danger" *ngIf="submitted && einventory.length==0">Введите хотя бы одного автора</small>
+  
   <button class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

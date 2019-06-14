@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ModalService } from './modal.service';
 import { LoadService } from './load.service';
 import { UserService } from './user.service';
+import { UploadTypes } from './models';
 // import { OnInit } from '@angular/core';
 
 @Injectable()
@@ -83,5 +84,27 @@ export class AdminService{
     public addPeriodical(enter){
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-periodical&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
     }
+
+    public addExperiment(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-experiment&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public addCatalog(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-catalog&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    /**
+     * Загрузка файлов на сервер
+     * @param id Id родителя изображения
+     * @param type тип родителя изображения
+     * @param data изображение (FormData)
+     * @param column столбец таблицы в который нужно вставить ссылку на файл
+     */
+    UploadFile(id, type:UploadTypes, data, column) {
+        return this.http.post<string>(this.baseUrl + 'controller.php?Key=upload-file&Id='+id+'&Type='+type+'&Login='+encodeURIComponent(this.us.user.Login)+'&Password='+encodeURIComponent(this.us.user.Password)+'&Column='+column, data, {
+          reportProgress:true,
+          observe:'events'
+        });
+      }
 }
 

@@ -37,6 +37,7 @@ import { AddAuthorComponent } from './add-author/add-author.component';
 import { AddPeriodicalComponent } from './add-periodical/add-periodical.component';
 import { AddComponent } from './add/add.component';
 import { AddCatalogComponent } from './add-catalog/add-catalog.component';
+import { FileValueAccessorDirective } from 'src/file-value-accessor';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { AddCatalogComponent } from './add-catalog/add-catalog.component';
     AddAuthorComponent,
     AddPeriodicalComponent,
     AddComponent,
-    AddCatalogComponent
+    AddCatalogComponent,
+    FileValueAccessorDirective
   ],
   imports: [
     BrowserModule,

@@ -8,3 +8,9 @@ export enum PeriodicTypes{
   Article = 'Статья',
   Magazine = 'Журнал'
 }
+
+
+export enum UploadTypes{
+  Catalog = 'catalog_of_solids',
+  Experiment = 'experiment'
+}

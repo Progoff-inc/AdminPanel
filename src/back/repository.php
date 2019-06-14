@@ -33,15 +33,14 @@ class DataBase {
             $url = "http://client.nomokoiw.beget.tech/admin/";
             $n = basename($t."_".$pid."_".$files['Data']['name']);
             //$tid=ucfirst($t)."Id";
-            $tid="Id";
-            $t .="s";
+            $tid="id_".$t;
             $d = "Files/$n";
             if(file_exists("Files")){
                 
                 if(move_uploaded_file($files['Data']['tmp_name'], $d)){
                     $s = $this->db->prepare("UPDATE $t SET $column=? WHERE $tid=?");
                     $s->execute(array($url.$d, $pid));
-                    return($url.$d);
+                    return("UPDATE $t SET $column=? WHERE $tid=?");
                 }else{
                     return($_FILES['Data']['tmp_name']);
                 }
@@ -72,8 +71,7 @@ class DataBase {
      */
     public function getImage($id, $t, $column){
         // $tid=ucfirst($t)."Id";
-        $tid="Id";
-        $t .="s";
+        $tid="id_".$t;
         $s = $this->db->prepare("SELECT $column FROM $t WHERE $tid=?");
         $s->execute(array($id));
         return $s->fetch()[$column];
@@ -204,7 +202,7 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
-        $sth = $this->db->query("SELECT * FROM experiments c JOIN solids s ON c.id_solid=s.id_solids");
+        $sth = $this->db->query("SELECT * FROM experiment c JOIN solids s ON c.id_solid=s.id_solids");
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Experiment');
         return $sth->fetchAll();
     }
@@ -416,12 +414,19 @@ class DataBase {
         if(!$this->checkAdmin($l, $p)){
             return;
         }
-        $res = $this->genInsertQuery($ex,"experiments");
+        $Inventory = $ex['Inventory'];
+        unset($ex['Inventory']);
+        $res = $this->genInsertQuery($ex,"experiment");
         $s = $this->db->prepare($res[0]);
         if($res[1][0]!=null){
             $s->execute($res[1]);
         }
-        return $this->db->lastInsertId();
+        $id = $this->db->lastInsertId();
+        for($i = 0; $i<count($Inventory); $i++){
+            $Inventory[$i]['id_exp']=$id;
+            $this->addExperimentInventory($l, $p, $Inventory[$i]);
+        }
+        return $id;
     }
 
     private function addExperimentInventory($l, $p, $inv){

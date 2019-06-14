@@ -7,8 +7,16 @@ export class AddService{
     public addForm:FormGroup;
     public fb:FormBuilder = new FormBuilder();
     public submitted = false;
+    public files = {};
     constructor(){
 
+    }
+
+    getValue(v){
+        if(v){
+            return v.split('\\')[2];
+        }
+        
     }
 
     get f() { return this.addForm.controls; }
