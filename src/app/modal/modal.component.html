@@ -6,6 +6,11 @@
     <add-method *ngIf="ms.type=='add-method'" [items]='ms.inpt'></add-method>
     <add-crochet *ngIf="ms.type=='add-crochet'" [items]='ms.inpt'></add-crochet>
     <add-solid *ngIf="ms.type=='add-solid'" [items]='ms.inpt'></add-solid>
+    <add-author *ngIf="ms.type=='update-author'" [item]='ms.inpt'></add-author>
+    <add-inventory *ngIf="ms.type=='update-inventory'" [item]='ms.inpt'></add-inventory>
+    <add-method *ngIf="ms.type=='update-method'" [item]='ms.inpt'></add-method>
+    <add-crochet *ngIf="ms.type=='update-crochet'" [item]='ms.inpt'></add-crochet>
+    <add-solid *ngIf="ms.type=='update-solid'" [item]='ms.inpt'></add-solid>
   </div>
   
   

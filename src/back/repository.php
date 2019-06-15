@@ -108,7 +108,7 @@ class DataBase {
      * @param string $t таблица для вставки
      * @return array массив, первым элементом которого является строка запроса, вторым - массив вставляемых значений
      */
-    private function genUpdateQuery($keys, $values, $t, $id){
+    private function genUpdateQuery($keys, $values, $t, $id, $id_name){
         $res = array('UPDATE '.$t.' SET ',array());
         $q = '';
         for ($i = 0; $i < count($keys); $i++) {
@@ -123,7 +123,7 @@ class DataBase {
             
         }
         $res[0]=rtrim($res[0],', ');
-        $res[0]=$res[0].' WHERE Id = '.$id;
+        $res[0]=$res[0]." WHERE $id_name = ".$id;
         
         return $res;
         
@@ -443,11 +443,11 @@ class DataBase {
     
     // ------------------------       Запросы на изменение данных в базе       ------------------------
     
-    public function updateNews($l, $p, $new){
+    public function updateAuthor($l, $p, $new){
         if($this->checkAdmin($l, $p)){
             $id = $new['Id'];
             unset($new['Id']);
-            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "news", $id);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "authors", $id, 'id_authors');
             $s = $this->db->prepare($a[0]);
             $s->execute($a[1]);
             return $a;

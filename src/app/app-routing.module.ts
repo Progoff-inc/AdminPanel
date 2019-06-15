@@ -19,10 +19,15 @@ const signRouts: Routes = [
   
 ]
 const addRouts: Routes = [
-  { path: '', component: AddCatalogComponent, pathMatch: 'full'},
+  { path: '', redirectTo:'catalog', pathMatch: 'full'},
   { path: 'growing', component: AddGrowingComponent},
+  { path: 'growing/:id', component: AddGrowingComponent},
   { path: 'experiment', component: AddExperimentComponent},
-  { path: 'periodical', component: AddPeriodicalComponent}
+  { path: 'experiment/:id', component: AddExperimentComponent},
+  { path: 'periodical', component: AddPeriodicalComponent},
+  { path: 'periodical/:id', component: AddPeriodicalComponent},
+  { path: 'catalog', component: AddCatalogComponent},
+  { path: 'catalog/:id', component: AddCatalogComponent},
   
 ]
 const routes: Routes = [

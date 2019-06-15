@@ -85,6 +85,10 @@ if(isset($_GET['Key']))
             $b = json_decode(file_get_contents('php://input'), true);
             echo json_encode($ctxt->addExperiment($_GET['Login'], $_GET['Password'], $b));
             break;
+        case 'update-author':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateAuthor($_GET['Login'], $_GET['Password'], $b));
+            break;
             
         case 'upload-file':
             $inp = json_decode(file_get_contents('php://input'), true);

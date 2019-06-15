@@ -11,7 +11,7 @@
 
 <h3 class="header">Каталог</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of catalog">
+  <div class="item" *ngFor="let s of catalog" routerLink="/add/catalog/{{s.id_catalog_of_solids}}">
     <img src="{{s.foto_of_range}}" alt="">
     <h4>{{s.name}}</h4>
   </div>

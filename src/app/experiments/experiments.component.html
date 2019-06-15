@@ -11,7 +11,7 @@
 
 <h3 class="header">Эксперименты</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of experiments">
+  <div class="item" *ngFor="let s of experiments" routerLink="/add/experiment/{{s.id_experiment}}">
     <img src="{{s.photo}}" alt="">
     <h4>{{s.name}}</h4>
   </div>

@@ -16,6 +16,7 @@ export class PeriodicalsComponent implements OnInit {
   ngOnInit() {
     this.as.getAuthors().subscribe(s => {
       this.authors=s;
+      console.log(s);
     })
 
     this.as.getPeriodicals().subscribe(s => {

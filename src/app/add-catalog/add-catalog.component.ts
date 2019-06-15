@@ -4,7 +4,6 @@ import { AdminService } from '../services/admin.service';
 import { Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { LoadService } from '../services/load.service';
-import { lstat } from 'fs';
 import { UploadTypes } from '../services/models';
 import { HttpEventType } from '@angular/common/http';
 

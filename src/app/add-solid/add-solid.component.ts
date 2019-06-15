@@ -11,7 +11,7 @@ import { ModalService } from '../services/modal.service';
   styleUrls: ['./add-solid.component.less']
 })
 export class AddSolidComponent extends AddService implements OnInit {
-  @Input() items:any;
+  
  
   constructor(private as:AdminService, private ms:ModalService) { 
     super();

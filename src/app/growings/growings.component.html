@@ -22,7 +22,7 @@
 </div>
 <h3 class="header">Выращивания</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of growings">
+  <div class="item" *ngFor="let s of growings" routerLink="/add/growing/{{s.id_growing}}">
     <h4>{{s.crochet_name}} {{s.crochet_surname}}</h4>
     <small>{{s.name}}</small>
   </div>

@@ -10,7 +10,7 @@ import { Validators } from '@angular/forms';
   styleUrls: ['./add-crochet.component.less']
 })
 export class AddCrochetComponent extends AddService implements OnInit {
-  @Input() items:any;
+  
  
   constructor(private as:AdminService, private ms:ModalService) { 
     super();

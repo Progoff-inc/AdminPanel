@@ -1,6 +1,6 @@
 <h3 class="header">Авторы</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of authors">
+  <div class="item" *ngFor="let s of authors" (click)="ms.open('update-author', s)">
     <h4>{{s.name}}</h4>
     <small>Автор</small>
   </div>
@@ -11,7 +11,7 @@
 
 <h3 class="header">Периодика</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of periodicals">
+  <div class="item" *ngFor="let s of periodicals" routerLink="/add/periodical/{{s.id_periodicals}}">
     <h4>{{s.name}}</h4>
     <small>{{s.type}}</small>
   </div>

@@ -93,6 +93,10 @@ export class AdminService{
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-catalog&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
     }
 
+    public updateAuthor(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-author&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
     /**
      * Загрузка файлов на сервер
      * @param id Id родителя изображения
