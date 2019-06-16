@@ -34,10 +34,6 @@ export class AddAuthorComponent extends AddService implements OnInit{
     
   }
 
-  upd(item){
-    this.update[item.id]=item.value;
-  }
-
   send(){
     this.submitted = true;
     if(this.addForm.invalid){

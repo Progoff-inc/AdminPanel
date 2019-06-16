@@ -1,6 +1,6 @@
 <h3 class="header">Кристаллы</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of solids">
+  <div class="item" *ngFor="let s of solids" (click)="ms.open('update-solid', s)">
     <h4>{{s.name}}</h4>
     <small>{{s.id_type}}</small>
   </div>

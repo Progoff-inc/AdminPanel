@@ -261,7 +261,7 @@ class DataBase {
     }
 
     private function getExperimentInventory($id){
-        $sth = $this->db->prepare("SELECT * FROM exp_inv ei JOIN invetory i ON ei.id_inv=i.id_invetory WHERE id_exp=?");
+        $sth = $this->db->prepare("SELECT * FROM exp_inv ei JOIN invetory i ON ei.id_inv=i.id_inventory WHERE id_exp=?");
         $sth->execute(array($id));
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Inventory');
         return $sth->fetchAll();
@@ -448,6 +448,58 @@ class DataBase {
             $id = $new['Id'];
             unset($new['Id']);
             $a = $this->genUpdateQuery(array_keys($new), array_values($new), "authors", $id, 'id_authors');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+    
+    public function updateCrochet($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "crochets", $id, 'id_crochet');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+    
+    public function updateMethod($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "methods", $id, 'id_method');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+    
+    public function updateSolid($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "solids", $id, 'id_solids');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+    
+    public function updateInventory($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "inventory", $id, 'id_inventory');
             $s = $this->db->prepare($a[0]);
             $s->execute($a[1]);
             return $a;

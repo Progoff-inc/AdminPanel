@@ -97,6 +97,22 @@ export class AdminService{
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-author&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
     }
 
+    public updateCrochet(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-crochet&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public updateMethod(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-method&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public updateInventory(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-inventory&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public updateSolid(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-solid&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
     /**
      * Загрузка файлов на сервер
      * @param id Id родителя изображения

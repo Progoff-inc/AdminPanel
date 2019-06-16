@@ -17,14 +17,26 @@ export class AddCrochetComponent extends AddService implements OnInit {
   }
 
   ngOnInit() {
-    this.addForm = this.fb.group({
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
-      second_name: [''],
-      work_place: [''],
-      position: [''],
-      rank: ['']
-    });
+    if(this.item){
+      this.addForm = this.fb.group({
+        name: [this.item.name, Validators.required],
+        surname: [this.item.surname, Validators.required],
+        second_name: [this.item.second_name],
+        work_place: [this.item.work_place],
+        position: [this.item.position],
+        rank: [this.item.rank]
+      });
+    }else{
+      this.addForm = this.fb.group({
+        name: ['', Validators.required],
+        surname: ['', Validators.required],
+        second_name: [''],
+        work_place: [''],
+        position: [''],
+        rank: ['']
+      });
+    }
+    
   }
 
   send(){
@@ -32,12 +44,25 @@ export class AddCrochetComponent extends AddService implements OnInit {
     if(this.addForm.invalid){
       return;
     }
-    this.as.addCrochet(this.v).subscribe(x => {
-      let s = this.v;
-      s['id_crochet']=x;
-      this.items.push(s);
-      this.ms.close();
-    })
+    if(!this.item){
+      this.as.addCrochet(this.v).subscribe(x => {
+        let s = this.v;
+        s['id_crochet']=x;
+        this.items.push(s);
+        this.ms.close();
+      })
+    }else{
+      this.update['Id']=this.item.id_crochet;
+      console.log(this.update);
+      this.as.updateCrochet(this.update).subscribe(x => {
+        Object.keys(this.update).forEach(x => {
+          if(x!='Id'){
+            this.item[x]=this.update[x];
+          }
+        })
+        this.ms.close();
+      })
+    }
   }
 
 }

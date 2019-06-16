@@ -119,7 +119,7 @@ CREATE TABLE `growing` (
 --
 
 CREATE TABLE `invetory` (
-  `id_invetory` smallint(5) UNSIGNED NOT NULL,
+  `id_inventory` smallint(5) UNSIGNED NOT NULL,
   `type` varchar(45) NOT NULL,
   `model` varchar(45) NOT NULL,
   `date_of_issue` date DEFAULT NULL,
@@ -251,7 +251,7 @@ ALTER TABLE `growing`
 -- Индексы таблицы `invetory`
 --
 ALTER TABLE `invetory`
-  ADD PRIMARY KEY (`id_invetory`);
+  ADD PRIMARY KEY (`id_inventory`);
 
 --
 -- Индексы таблицы `method`
@@ -323,7 +323,7 @@ ALTER TABLE `growing`
 -- AUTO_INCREMENT для таблицы `invetory`
 --
 ALTER TABLE `invetory`
-  MODIFY `id_invetory` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_inventory` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `periodicals`
@@ -359,7 +359,7 @@ ALTER TABLE `experiments`
 --
 ALTER TABLE `exp_inv`
   ADD CONSTRAINT `fk_experiments` FOREIGN KEY (`id_exp`) REFERENCES `experiments` (`id_experiment`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_inventory` FOREIGN KEY (`id_inv`) REFERENCES `invetory` (`id_invetory`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_inventory` FOREIGN KEY (`id_inv`) REFERENCES `invetory` (`id_inventory`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `growing`

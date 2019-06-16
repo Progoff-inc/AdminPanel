@@ -1,7 +1,7 @@
 
 <h3 class="header">Методы</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of methods">
+  <div class="item" *ngFor="let s of methods" (click)="ms.open('update-method', s)">
     <h4>{{s.name}}</h4>
     <small>Метод</small>
   </div>
@@ -12,7 +12,7 @@
 
 <h3 class="header">Выращиватели</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of crochets">
+  <div class="item" *ngFor="let s of crochets" (click)="ms.open('update-crochet', s)">
     <h4>{{s.name}} {{s.surname}}</h4>
     <small>{{s.position}}</small>
   </div>

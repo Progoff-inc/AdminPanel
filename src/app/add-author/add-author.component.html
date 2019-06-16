@@ -15,5 +15,5 @@
       <input [ngClass]="{'border-danger':(submitted && f.second_name.errors)}" (change)="upd(second_name)" formControlName="second_name" class="form-control" id="second_name"  placeholder="Отчество автора" #second_name>
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
-  <button class="btn btn-primary" (click)="send()">Отправить</button>
+  <button *ngIf="!item || upd_length>0" class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

@@ -2,34 +2,34 @@
   <h3 class="d-flex justify-content-between align-items-center" style="font-weight:400">Добавление выращивателя<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
   <div class="form-group">
     <label for="na" [ngClass]="{'text-danger':(submitted && f.name.errors)}">Имя*</label>
-    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Имя выращивателя">
+    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" (change)="upd(name)" formControlName="name" class="form-control" id="name" placeholder="Имя выращивателя" #name>
     <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите имя выращивателя</small>
   </div>
   <div class="form-group">
     <label for="na" [ngClass]="{'text-danger':(submitted && f.surname.errors)}">Фамилия*</label>
-    <input [ngClass]="{'border-danger':(submitted && f.surname.errors)}" formControlName="surname" class="form-control" id="na" placeholder="Фамилия вязального">
+    <input [ngClass]="{'border-danger':(submitted && f.surname.errors)}" (change)="upd(surname)" formControlName="surname" class="form-control" id="surname" placeholder="Фамилия вязального" #surname>
     <small  class="form-text text-danger" *ngIf="submitted && f.surname.errors && f.surname.errors.required">Введите фамилию выращивателя</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.second_name.errors)}">Отчество</label>
-      <input [ngClass]="{'border-danger':(submitted && f.second_name.errors)}" formControlName="second_name" class="form-control" id="exampleInputEmail1"  placeholder="Отчество выращивателя">
+      <input [ngClass]="{'border-danger':(submitted && f.second_name.errors)}" (change)="upd(second_name)" formControlName="second_name" class="form-control" id="second_name"  placeholder="Отчество выращивателя" #second_name>
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.work_place.errors)}">Место работы</label>
-      <input [ngClass]="{'border-danger':(submitted && f.work_place.errors)}" formControlName="work_place" class="form-control" id="exampleInputEmail1"  placeholder="Место работы выращивателя">
+      <input [ngClass]="{'border-danger':(submitted && f.work_place.errors)}" (change)="upd(work_place)" formControlName="work_place" class="form-control" id="work_place"  placeholder="Место работы выращивателя" #work_place>
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.position.errors)}">Позиция</label>
-      <input [ngClass]="{'border-danger':(submitted && f.position.errors)}" formControlName="position" class="form-control" id="exampleInputEmail1"  placeholder="Позиция выращивателя">
+      <input [ngClass]="{'border-danger':(submitted && f.position.errors)}" (change)="upd(position)" formControlName="position" class="form-control" id="position"  placeholder="Позиция выращивателя" #position>
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.rank.errors)}">Ранг</label>
-      <input [ngClass]="{'border-danger':(submitted && f.rank.errors)}" formControlName="rank" class="form-control" id="exampleInputEmail1"  placeholder="Ранг выращивателя">
+      <input [ngClass]="{'border-danger':(submitted && f.rank.errors)}" (change)="upd(rank)" formControlName="rank" class="form-control" id="rank"  placeholder="Ранг выращивателя" #rank>
       <!-- <small  class="form-text text-danger" *ngIf="submitted && f.formulae.errors && f.formulae.errors.required">Введите формулу кристалла</small> -->
   </div>
   
-  <button class="btn btn-primary" (click)="send()">Отправить</button>
+  <button *ngIf="!item || upd_length>0" class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

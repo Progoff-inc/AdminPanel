@@ -1,6 +1,6 @@
 <h3 class="header">Инвентарь</h3>
 <div class="flex-container">
-  <div class="item" *ngFor="let s of inventory">
+  <div class="item" *ngFor="let s of inventory" (click)="ms.open('update-inventory', s)">
     <h4>{{s.model}}</h4>
     <small>{{s.type}}</small>
   </div>

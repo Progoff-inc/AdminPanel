@@ -17,9 +17,16 @@ export class AddMethodComponent extends AddService implements OnInit {
   }
 
   ngOnInit() {
-    this.addForm = this.fb.group({
-      name: ['', Validators.required]
-    });
+    if(this.item){
+      this.addForm = this.fb.group({
+        name: [this.item.name, Validators.required]
+      });
+    }else{
+      this.addForm = this.fb.group({
+        name: ['', Validators.required]
+      });
+    }
+    
   }
 
   send(){
@@ -27,11 +34,25 @@ export class AddMethodComponent extends AddService implements OnInit {
     if(this.addForm.invalid){
       return;
     }
-    this.as.addMethod(this.v).subscribe(x => {
-      let s = this.v;
-      s['id_method']=x;
-      this.items.push(s);
-      this.ms.close();
-    })
+    if(this.item){
+      this.update['Id']=this.item.id_method;
+      console.log(this.update);
+      this.as.updateMethod(this.update).subscribe(x => {
+        Object.keys(this.update).forEach(x => {
+          if(x!='Id'){
+            this.item[x]=this.update[x];
+          }
+        })
+        this.ms.close();
+      })
+    }else{
+      this.as.addMethod(this.v).subscribe(x => {
+        let s = this.v;
+        s['id_method']=x;
+        this.items.push(s);
+        this.ms.close();
+      })
+    }
+    
   }
 }

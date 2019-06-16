@@ -85,10 +85,31 @@ if(isset($_GET['Key']))
             $b = json_decode(file_get_contents('php://input'), true);
             echo json_encode($ctxt->addExperiment($_GET['Login'], $_GET['Password'], $b));
             break;
+            
+            // --------------- Обновление данных ---------------
+            
         case 'update-author':
             $b = json_decode(file_get_contents('php://input'), true);
             echo json_encode($ctxt->updateAuthor($_GET['Login'], $_GET['Password'], $b));
             break;
+        case 'update-crochet':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateCrochet($_GET['Login'], $_GET['Password'], $b));
+            break;
+        case 'update-method':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateMethod($_GET['Login'], $_GET['Password'], $b));
+            break;
+        case 'update-inventory':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateInventory($_GET['Login'], $_GET['Password'], $b));
+            break;
+        case 'update-solid':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateSolid($_GET['Login'], $_GET['Password'], $b));
+            break;
+            
+            // --------------- Загрузка файлов ---------------
             
         case 'upload-file':
             $inp = json_decode(file_get_contents('php://input'), true);

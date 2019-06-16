@@ -37,7 +37,7 @@
     <div class="item" *ngFor="let e of einventory">
       <label for="exampleInputEmail1">Предмет инвентаря</label>
       <select class="form-control" rows="5" id="DES" [(ngModel)]="e.id_inv" [ngModelOptions]="{standalone: true}">
-        <option value="{{s.id_invetory}}" *ngFor="let s of inventory" [disabled]="ps.indexOf(s.id_invetory)>-1">{{s.model}}</option>
+        <option value="{{s.id_inventory}}" *ngFor="let s of inventory" [disabled]="ps.indexOf(s.id_inventory)>-1">{{s.model}}</option>
       </select>
     </div>
     <div *ngIf="einventory.length!=inventory.length" class="item d-flex justify-content-center align-items-center plus" style="font-size:25px" (click)="addInv()">

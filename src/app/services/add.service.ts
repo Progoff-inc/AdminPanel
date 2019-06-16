@@ -22,6 +22,13 @@ export class AddService{
         
     }
 
+    upd(item){
+        console.log(item);
+        this.update[item.id]=item.value;
+       
+    }
+
     get f() { return this.addForm.controls; }
     get v() { return this.addForm.value; }
+    get upd_length() { return Object.keys(this.update).length; }
 }

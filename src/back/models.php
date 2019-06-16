@@ -48,7 +48,7 @@ class Growing{
 }
 
 class Inventory{
-    public $id_invetory;
+    public $id_inventory;
     public $type;
     public $model;
     public $date_of_issue;
