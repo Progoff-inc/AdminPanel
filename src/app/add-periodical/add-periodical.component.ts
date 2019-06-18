@@ -5,6 +5,7 @@ import { ModalService } from '../services/modal.service';
 import { Validators } from '@angular/forms';
 import { PeriodicTypes } from '../services/models';
 import { forkJoin } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-periodical',
@@ -16,7 +17,7 @@ export class AddPeriodicalComponent extends AddService implements OnInit {
   pauthors = [];
   solids = [];
   authors = [];
-  constructor(private as:AdminService) { 
+  constructor(private as:AdminService, private route:ActivatedRoute) { 
     super();
   }
 
@@ -38,6 +39,27 @@ export class AddPeriodicalComponent extends AddService implements OnInit {
       hyper_text: [''],
       information: ['']
     });
+    if(this.route.snapshot.paramMap.get("id")){
+      this.as.getPeriodical((this.route.snapshot.paramMap.get("id"))).subscribe(x => {
+        this.item = x;
+        this.pauthors=x.Authors;
+        this.psolids=x.Solids;
+        this.addForm = this.fb.group({
+          name: [this.item.name, Validators.required],
+          type: [this.item.type, Validators.required],
+          publishing_house: [this.item.publishing_house, Validators.required],
+          cipher: [this.item.cipher],
+          year: [this.item.year, Validators.required],
+          value: [this.item.value, Validators.required],
+          tom: [this.item.tom],
+          num_part: [this.item.num_part],
+          location: [this.item.location],
+          hyper_text: [this.item.hyper_text],
+          information: [this.item.information]
+        });
+      })
+      
+    }
   }
 
   addSolid(){

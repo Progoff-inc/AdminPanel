@@ -57,6 +57,14 @@ export class AdminService{
         return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-crochets&Login='+this.us.user.Login+'&Password='+this.us.user.Password);
     }
 
+    public getGrowing(id){
+        return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-growing&Login='+this.us.user.Login+'&Password='+this.us.user.Password+'&Id='+id);
+    }
+
+    public getPeriodical(id){
+        return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-periodical&Login='+this.us.user.Login+'&Password='+this.us.user.Password+'&Id='+id);
+    }
+
     public addSolid(solid){
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-solid&Login='+this.us.user.Login+'&Password='+this.us.user.Password, solid);
     }
@@ -111,6 +119,10 @@ export class AdminService{
 
     public updateSolid(enter){
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-solid&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
+    public updateGrowing(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-growing&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
     }
 
     /**
