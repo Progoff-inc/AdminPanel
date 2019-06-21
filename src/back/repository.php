@@ -254,7 +254,7 @@ class DataBase {
     }
 
     private function getPeriodicalAuthors($id){
-        $sth = $this->db->prepare("SELECT * FROM periodic_author pa JOIN authors a ON pa.id_author=a.id_authors WHERE id_Periodic=?");
+        $sth = $this->db->prepare("SELECT * FROM periodic_author pa JOIN authors a ON pa.id_author=a.id_authors WHERE id_period=?");
         $sth->execute(array($id));
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Author');
         return $sth->fetchAll();
@@ -356,7 +356,7 @@ class DataBase {
             $this->addPeriodicalSolid($l, $p, $solids[$i]);
         }
         for($i = 0; $i<count($authors); $i++){
-            $authors[$i]['id_Periodic']=$id;
+            $authors[$i]['id_period']=$id;
             $this->addPeriodicalAuthor($l, $p, $authors[$i]);
         }
         return $id;

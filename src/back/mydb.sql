@@ -182,7 +182,7 @@ CREATE TABLE `periodicals_catalog` (
 --
 
 CREATE TABLE `periodic_author` (
-  `id_Periodic` smallint(5) UNSIGNED NOT NULL,
+  `id_period` smallint(5) UNSIGNED NOT NULL,
   `id_author` smallint(5) UNSIGNED NOT NULL,
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
@@ -276,7 +276,7 @@ ALTER TABLE `periodicals_catalog`
 -- Индексы таблицы `periodic_author`
 --
 ALTER TABLE `periodic_author`
-  ADD KEY `fk_period_idx` (`id_Periodic`),
+  ADD KEY `fk_period_idx` (`id_period`),
   ADD KEY `fk_author_idx` (`id_author`);
 
 --
@@ -380,7 +380,7 @@ ALTER TABLE `periodicals_catalog`
 --
 ALTER TABLE `periodic_author`
   ADD CONSTRAINT `fk_author` FOREIGN KEY (`id_author`) REFERENCES `authors` (`id_authors`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_period` FOREIGN KEY (`id_Periodic`) REFERENCES `periodicals` (`id_periodicals`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_period` FOREIGN KEY (`id_period`) REFERENCES `periodicals` (`id_periodicals`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

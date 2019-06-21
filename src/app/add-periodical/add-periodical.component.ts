@@ -17,7 +17,7 @@ export class AddPeriodicalComponent extends AddService implements OnInit {
   pauthors = [];
   solids = [];
   authors = [];
-  constructor(private as:AdminService, private route:ActivatedRoute) { 
+  constructor(public as:AdminService, private route:ActivatedRoute) { 
     super();
   }
 
@@ -63,17 +63,20 @@ export class AddPeriodicalComponent extends AddService implements OnInit {
   }
 
   addSolid(){
-    console.log(this.psolids)
+    this.update['Solids']=this.psolids;
     if(this.psolids.length==0 || this.psolids[this.psolids.length-1].id_solid!=''){
-      this.psolids.push({id_solid:''});
+        this.psolids.push({id_solid:''});
     }
     
   }
   addAuthor(){
+    this.update['Authors']=this.pauthors;
     if(this.pauthors.length==0 || this.pauthors[this.pauthors.length-1].id_author!=''){
       this.pauthors.push({id_author:''});
     }
   }
+
+  
 
   send(){
     this.submitted = true;
@@ -83,15 +86,30 @@ export class AddPeriodicalComponent extends AddService implements OnInit {
     if(this.pauthors.length==0 || this.psolids.length==0){
       return
     }
-    let p = this.v;
-    p['Solids']=this.psolids;
-    p['Authors']=this.pauthors;
-    this.as.addPeriodical(p).subscribe(x => {
-      this.addForm.reset();
-      this.pauthors=[];
-      this.psolids=[];
-      this.submitted = false;
-    })
+    if(this.item){
+      this.update['Id']=this.route.snapshot.paramMap.get("id");
+      if(this.update['Solids']){
+        this.update['Solids']=this.psolids.map(x => {let s = { id_solid:x.id_solid }; return s; });
+      }
+      if(this.update['Authors']){
+        this.update['Authors']=this.pauthors.map(x => {let s = { id_author:x.id_author }; return s;});
+      }
+      
+      this.as.updatePeriodical(this.update).subscribe(x => {
+        this.update={};
+      })
+    }else{
+      let p = this.v;
+      p['Solids']=this.psolids;
+      p['Authors']=this.pauthors;
+      this.as.addPeriodical(p).subscribe(x => {
+        this.addForm.reset();
+        this.pauthors=[];
+        this.psolids=[];
+        this.submitted = false;
+      })
+    }
+    
   }
 
   get st() {return [PeriodicTypes.Book, PeriodicTypes.Article, PeriodicTypes.Magazine]}

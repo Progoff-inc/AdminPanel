@@ -2,67 +2,67 @@
   <h3 class="header d-flex justify-content-between align-items-center" style="font-weight:400">Добавление периодики<i *ngIf="show" class="fas fa-times" style="font-size: 1.5rem;" (click)="ms.close()"></i></h3>
   <div class="form-group">
     <label for="na" [ngClass]="{'text-danger':(submitted && f.name.errors)}">Название</label>
-    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" formControlName="name" class="form-control" id="na" placeholder="Название источника">
+    <input [ngClass]="{'border-danger':(submitted && f.name.errors)}" (change)="upd(name)" formControlName="name" class="form-control" id="name" placeholder="Название источника" #name>
     <small  class="form-text text-danger" *ngIf="submitted && f.name.errors && f.name.errors.required">Введите название кристалла</small>
   </div>
   <div class="form-group">
       <label [ngClass]="{'text-danger':(submitted && f.type.errors)}" for="DES">Тип периодики</label>
-      <select [ngClass]="{'border-danger':(submitted && f.type.errors)}" formControlName="type" class="form-control"  id="DES" >
+      <select [ngClass]="{'border-danger':(submitted && f.type.errors)}" (change)="upd(type)" formControlName="type" class="form-control"  id="type" #type>
         <option value="{{s}}" *ngFor="let s of st">{{s}}</option>
       </select>
       <small  class="form-text text-danger" *ngIf="submitted && f.type.errors && f.type.errors.required">Введите тип периодики</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.publishing_house.errors)}">Издательство</label>
-      <input [ngClass]="{'border-danger':(submitted && f.publishing_house.errors)}" formControlName="publishing_house" class="form-control" placeholder="Издательство">
+      <input [ngClass]="{'border-danger':(submitted && f.publishing_house.errors)}" (change)="upd(publishing_house)" formControlName="publishing_house" class="form-control" placeholder="Издательство" #publishing_house>
       <small  class="form-text text-danger" *ngIf="submitted && f.publishing_house.errors && f.publishing_house.errors.required">Введите издательство</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.cipher.errors)}">Код</label>
-      <input [ngClass]="{'border-danger':(submitted && f.cipher.errors)}" formControlName="cipher"  class="form-control" placeholder="Код">
+      <input [ngClass]="{'border-danger':(submitted && f.cipher.errors)}" (change)="upd(cipher)" formControlName="cipher" id="cipher"  class="form-control" placeholder="Код" #cipher>
       <small  class="form-text text-danger" *ngIf="submitted && f.cipher.errors && f.cipher.errors.required">Введите код</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.year.errors)}">Год</label>
-      <input [ngClass]="{'border-danger':(submitted && f.year.errors)}" formControlName="year" type="number" class="form-control"  placeholder="Год издания">
+      <input [ngClass]="{'border-danger':(submitted && f.year.errors)}" (change)="upd(year)" formControlName="year" type="number" class="form-control" id="year"  placeholder="Год издания" #year>
       <small  class="form-text text-danger" *ngIf="submitted && f.year.errors && f.year.errors.required">Введите год издания</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.value.errors)}">Значение</label>
-      <input [ngClass]="{'border-danger':(submitted && f.value.errors)}" formControlName="value" type="number" class="form-control"  placeholder="Значение">
+      <input [ngClass]="{'border-danger':(submitted && f.value.errors)}" (change)="upd(value)" formControlName="value" type="number" class="form-control" id="value"  placeholder="Значение" #value>
       <small  class="form-text text-danger" *ngIf="submitted && f.value.errors && f.value.errors.required">Введите значение</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.tom.errors)}">Том</label>
-      <input [ngClass]="{'border-danger':(submitted && f.tom.errors)}" formControlName="tom" type="number" class="form-control"  placeholder="Том">
+      <input [ngClass]="{'border-danger':(submitted && f.tom.errors)}" (change)="upd(tom)" formControlName="tom" type="number" class="form-control" id="tom"  placeholder="Том" #tom>
       <small  class="form-text text-danger" *ngIf="submitted && f.tom.errors && f.tom.errors.required">Введите том</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.num_part.errors)}">Часть</label>
-      <input [ngClass]="{'border-danger':(submitted && f.num_part.errors)}" formControlName="num_part" type="number" class="form-control"  placeholder="Часть">
+      <input [ngClass]="{'border-danger':(submitted && f.num_part.errors)}" (change)="upd(num_part)" formControlName="num_part" type="number" class="form-control" id="num_part"  placeholder="Часть" #num_part>
       <small  class="form-text text-danger" *ngIf="submitted && f.num_part.errors && f.num_part.errors.required">Введите часть</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.location.errors)}">Расположение</label>
-      <input [ngClass]="{'border-danger':(submitted && f.location.errors)}" formControlName="location"  class="form-control"  placeholder="Расположение">
+      <input [ngClass]="{'border-danger':(submitted && f.location.errors)}" (change)="upd(location)" formControlName="location"  class="form-control" id="location"  placeholder="Расположение" #location>
       <small  class="form-text text-danger" *ngIf="submitted && f.location.errors && f.location.errors.required">Введите расположение</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.hyper_text.errors)}">Cсылка</label>
-      <input [ngClass]="{'border-danger':(submitted && f.hyper_text.errors)}" formControlName="hyper_text"  class="form-control"  placeholder="Cсылка">
+      <input [ngClass]="{'border-danger':(submitted && f.hyper_text.errors)}" (change)="upd(hyper_text)" formControlName="hyper_text"  class="form-control" id="hyper_text"  placeholder="Cсылка" #hyper_text>
       <small  class="form-text text-danger" *ngIf="submitted && f.hyper_text.errors && f.hyper_text.errors.required">Введите ссылку</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.information.errors)}">Информация</label>
-      <textarea [ngClass]="{'border-danger':(submitted && f.information.errors)}" formControlName="information" class="form-control" rows="5" placeholder="Информация"></textarea>
+      <textarea [ngClass]="{'border-danger':(submitted && f.information.errors)}" (change)="upd(information)" formControlName="information" class="form-control" rows="5" id="information" placeholder="Информация" #information></textarea>
       <small  class="form-text text-danger" *ngIf="submitted && f.information.errors && f.information.errors.required">Введите информацию</small>
   </div>
   <h3 class="header">Авторы</h3>
   <div class="flex-container mb-3">
-    <div class="item remove" *ngFor="let s of pauthors">
-      <span>&times;</span>
+    <div class="item remove" *ngFor="let p of pauthors">
+      <span (click)="deleteItem(this,'pauthors', 'id_author', p.id_author) && updArray('Authors', pauthors)" >&times;</span>
       <label for="exampleInputEmail1">Автор</label>
-      <select class="form-control" rows="5" id="DES" [(ngModel)]="s.id_author" [ngModelOptions]="{standalone: true}">
+      <select class="form-control" rows="5" id="DES" [(ngModel)]="p.id_author" [ngModelOptions]="{standalone: true}">
         <option value="{{s.id_authors}}" *ngFor="let s of authors" [disabled]="pa.indexOf(s.id_authors)>-1">{{s.name}}</option>
       </select>
     </div>
@@ -73,10 +73,10 @@
   <small  class="form-text text-danger" *ngIf="submitted && pauthors.length==0">Введите хотя бы одного автора</small>
   <h3 class="header">Кристаллы</h3>
   <div class="flex-container mb-3">
-    <div class="item remove" *ngFor="let s of psolids">
-        <span>&times;</span>
+    <div class="item remove" *ngFor="let p of psolids">
+        <span (click)="deleteItem(this,'psolids', 'id_solid', p.id_solid) && updArray('Solids', psolids)">&times;</span>
       <label for="exampleInputEmail1">Кристалл</label>
-      <select class="form-control" rows="5" id="DES" [(ngModel)]="s.id_solid" [ngModelOptions]="{standalone: true}">
+      <select class="form-control" rows="5" id="DES" [(ngModel)]="p.id_solid" [ngModelOptions]="{standalone: true}">
         <option value="{{s.id_solids}}" *ngFor="let s of solids" [disabled]="ps.indexOf(s.id_solids)>-1">{{s.name}}</option>
       </select>
     </div>
@@ -85,5 +85,5 @@
     </div>
   </div>
   <small  class="form-text text-danger mb-3" *ngIf="submitted && psolids.length==0">Введите хотя бы один кристалл</small>
-  <button class="btn btn-primary" (click)="send()">Отправить</button>
+  <button *ngIf="!item || upd_length>0" class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

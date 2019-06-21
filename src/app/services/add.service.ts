@@ -22,10 +22,19 @@ export class AddService{
         
     }
 
+    updArray(name, arr){
+        this.update[name]=arr;
+    }
+
     upd(item){
         console.log(item);
         this.update[item.id]=item.value;
        
+    }
+
+    deleteItem(parent, arr, name, id){
+        parent[arr] = parent[arr].filter(x => x[name]!=id);
+        return true;
     }
 
     get f() { return this.addForm.controls; }
