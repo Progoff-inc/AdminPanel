@@ -16,7 +16,6 @@
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.photo.errors)}">Фотография</label>
       <span>{{v.photo==''?'':getValue(v.photo)}}<button class="btn btn-link" (click)="photo.click()">{{v.photo==''?'Загрузить':'Изменить'}} фотографию</button></span>
-      
       <input class="d-none" id='photo' type="file" (change)="setFile($event)" formControlName="photo" #photo>
       <small  class="form-text text-danger" *ngIf="submitted && f.photo.errors && f.photo.errors.pattern">Файл с расширением .png или .jpg</small>
   </div>
@@ -34,8 +33,10 @@
   
   <h3 class="header">Инвентарь</h3>
   <div class="flex-container mb-3">
-    <div class="item" *ngFor="let e of einventory">
+    <div class="item remove" *ngFor="let e of einventory">
+      
       <label for="exampleInputEmail1">Предмет инвентаря</label>
+      <span (click)="deleteItem(this,'einventory', 'id_inv', e.id_inv) && updArray('Inventory', einventory)" >&times;</span>
       <select class="form-control" rows="5" id="DES" [(ngModel)]="e.id_inv" [ngModelOptions]="{standalone: true}">
         <option value="{{s.id_inventory}}" *ngFor="let s of inventory" [disabled]="ps.indexOf(s.id_inventory)>-1">{{s.model}}</option>
       </select>
@@ -46,5 +47,5 @@
   </div>
   <small  class="form-text text-danger" *ngIf="submitted && einventory.length==0">Введите хотя бы одного автора</small>
   
-  <button class="btn btn-primary" (click)="send()">Отправить</button>
+  <button *ngIf="!item || upd_length>0" class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

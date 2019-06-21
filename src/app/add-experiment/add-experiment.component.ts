@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { UploadTypes } from '../services/models';
 import { HttpEventType } from '@angular/common/http';
 import { LoadService } from '../services/load.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-experiment',
@@ -16,7 +17,7 @@ export class AddExperimentComponent extends AddService implements OnInit {
   solids = [];
   inventory = [];
   einventory = [];
-  constructor(private as:AdminService, private ls:LoadService) { 
+  constructor(private as:AdminService, private ls:LoadService, private route:ActivatedRoute) { 
     super();
   }
 
@@ -32,6 +33,20 @@ export class AddExperimentComponent extends AddService implements OnInit {
       table_of_frequency: ['', Validators.pattern(/(\.docx|\.pdf|\.txt|\.doc|\.xlsx)$/i)],
       photo: ['', Validators.pattern(/(\.png|\.jpg)$/i)]
     });
+    if(this.route.snapshot.paramMap.get("id")){
+      this.as.getExperiment((this.route.snapshot.paramMap.get("id"))).subscribe(x => {
+        this.item = x;
+        this.einventory = x.Inventory;
+        this.addForm = this.fb.group({
+          conditions: [this.item.conditions, Validators.required],
+          id_solid: [this.item.id_solid, Validators.required],
+          rng: [this.item.rng, Validators.required],
+          table_of_frequency: ['', Validators.pattern(/(\.docx|\.pdf|\.txt|\.doc|\.xlsx)$/i)],
+          photo: ['', Validators.pattern(/(\.png|\.jpg)$/i)]
+        });
+      })
+      
+    }
 
     this.addForm.valueChanges.subscribe(v=>{
       console.log(v);

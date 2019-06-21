@@ -65,6 +65,14 @@ export class AdminService{
         return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-periodical&Login='+this.us.user.Login+'&Password='+this.us.user.Password+'&Id='+id);
     }
 
+    public getExperiment(id){
+        return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-experiment&Login='+this.us.user.Login+'&Password='+this.us.user.Password+'&Id='+id);
+    }
+
+    public getCatalogItem(id){
+        return this.http.get<any>(this.baseUrl + 'controller.php?Key=get-catalog-item&Login='+this.us.user.Login+'&Password='+this.us.user.Password+'&Id='+id);
+    }
+
     public addSolid(solid){
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=add-solid&Login='+this.us.user.Login+'&Password='+this.us.user.Password, solid);
     }
