@@ -36,6 +36,7 @@ export class AddExperimentComponent extends AddService implements OnInit {
     if(this.route.snapshot.paramMap.get("id")){
       this.as.getExperiment((this.route.snapshot.paramMap.get("id"))).subscribe(x => {
         this.item = x;
+        console.log(x);
         this.einventory = x.Inventory;
         this.addForm = this.fb.group({
           conditions: [this.item.conditions, Validators.required],

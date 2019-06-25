@@ -15,6 +15,7 @@
   </div>
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.photo.errors)}">Фотография</label>
+      <document *ngIf="item && item.photo" [type]="'img'" [href]="item.photo"></document>
       <span>{{v.photo==''?'':getValue(v.photo)}}<button class="btn btn-link" (click)="photo.click()">{{v.photo==''?'Загрузить':'Изменить'}} фотографию</button></span>
       <input class="d-none" id='photo' type="file" (change)="setFile($event)" formControlName="photo" #photo>
       <small  class="form-text text-danger" *ngIf="submitted && f.photo.errors && f.photo.errors.pattern">Файл с расширением .png или .jpg</small>
@@ -26,6 +27,7 @@
   </div>
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.table_of_frequency.errors)}">Исследование</label>
+      <document *ngIf="item && item.table_of_frequency" [type]="'doc'" [href]="item.table_of_frequency"></document>
       <span>{{v.table_of_frequency==''?'':getValue(v.table_of_frequency)}}<button class="btn btn-link" (click)="table_of_frequency.click()">{{v.table_of_frequency==''?'Загрузить':'Изменить'}} файл исследования</button></span>
       <input class="d-none" id='table_of_frequency' type="file" (change)="setFile($event)" formControlName="table_of_frequency" #table_of_frequency>
       <small  class="form-text text-danger" *ngIf="submitted && f.table_of_frequency.errors && f.table_of_frequency.errors.pattern">Файл с расширением .doc, .docx, .pdf или .xlsx</small>

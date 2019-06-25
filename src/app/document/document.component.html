@@ -1,3 +1,7 @@
-<p>
-  document works!
-</p>
+<div *ngIf="type=='img'" class="cont">
+  <img src="{{href}}">
+</div>
+<div *ngIf="type!='img'" class="cont">
+  <img src="../../assets/images/pdf.png" >
+  <a href="{{href}}">{{getValue(href)}}</a>
+</div>
