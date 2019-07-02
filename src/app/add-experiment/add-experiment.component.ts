@@ -6,7 +6,7 @@ import { forkJoin } from 'rxjs';
 import { UploadTypes } from '../services/models';
 import { HttpEventType } from '@angular/common/http';
 import { LoadService } from '../services/load.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-experiment',
@@ -17,7 +17,9 @@ export class AddExperimentComponent extends AddService implements OnInit {
   solids = [];
   inventory = [];
   einventory = [];
-  constructor(private as:AdminService, private ls:LoadService, private route:ActivatedRoute) { 
+  tpattern=/(\.docx|\.pdf|\.txt|\.doc|\.xlsx|\.xls)$/i;
+  ipattern=/(\.png|\.jpg)$/i;
+  constructor(private as:AdminService, private ls:LoadService, private route:ActivatedRoute, private router:Router) { 
     super();
   }
 
@@ -30,8 +32,8 @@ export class AddExperimentComponent extends AddService implements OnInit {
       conditions: ['', Validators.required],
       id_solid: ['', Validators.required],
       rng: ['', Validators.required],
-      table_of_frequency: ['', Validators.pattern(/(\.docx|\.pdf|\.txt|\.doc|\.xlsx)$/i)],
-      photo: ['', Validators.pattern(/(\.png|\.jpg)$/i)]
+      table_of_frequency: ['', Validators.pattern(this.tpattern)],
+      photo: ['', Validators.pattern(this.ipattern)]
     });
     if(this.route.snapshot.paramMap.get("id")){
       this.as.getExperiment((this.route.snapshot.paramMap.get("id"))).subscribe(x => {
@@ -42,8 +44,8 @@ export class AddExperimentComponent extends AddService implements OnInit {
           conditions: [this.item.conditions, Validators.required],
           id_solid: [this.item.id_solid, Validators.required],
           rng: [this.item.rng, Validators.required],
-          table_of_frequency: ['', Validators.pattern(/(\.docx|\.pdf|\.txt|\.doc|\.xlsx)$/i)],
-          photo: ['', Validators.pattern(/(\.png|\.jpg)$/i)]
+          table_of_frequency: ['', Validators.pattern(this.tpattern)],
+          photo: ['', Validators.pattern(this.ipattern)]
         });
       })
       
@@ -55,6 +57,7 @@ export class AddExperimentComponent extends AddService implements OnInit {
   }
 
   addInv(){
+    this.update['Inventory']=this.einventory;
     if(this.einventory.length==0 || this.einventory[this.einventory.length-1].id_inv!=''){
       this.einventory.push({id_inv:''});
     }
@@ -65,8 +68,7 @@ export class AddExperimentComponent extends AddService implements OnInit {
     console.log(this.files);
   }
   send(){
-    this.ls.showLoad = true;
-    this.ls.load = 0;
+    
     this.submitted = true;
     if(this.addForm.invalid){
       return;
@@ -74,29 +76,80 @@ export class AddExperimentComponent extends AddService implements OnInit {
     if(this.einventory.length==0 || this.einventory.length==0){
       return
     }
-    let p = this.v;
-    p.photo = null;
-    p.table_of_frequency = null;
-    p['Inventory']=this.einventory;
-    this.as.addExperiment(this.v).subscribe(x => {
-      Object.keys(this.files).forEach(f => {
-        let formData = new FormData();
-        formData.append('Data', this.files[f]);
-        this.as.UploadFile(x, UploadTypes.Experiment, formData, f).subscribe(event=>{
-          if(event.type == HttpEventType.UploadProgress){
-            this.ls.load = Math.round(event.loaded/event.total * 100);
+    
+    if(!this.item){
+      this.ls.showLoad = true;
+      this.ls.load = 0;
+      let p = this.v;
+      p.photo = null;
+      p.table_of_frequency = null;
+      p['Inventory']=this.einventory;
+      this.as.addExperiment(this.v).subscribe(x => {
+        Object.keys(this.files).filter(file => !!this.files[file]).forEach(f => {
+          let formData = new FormData();
+          formData.append('Data', this.files[f]);
+          this.as.UploadFile(x, UploadTypes.Experiment, formData, f).subscribe(event=>{
+            if(event.type == HttpEventType.UploadProgress){
+              this.ls.load = Math.round(event.loaded/event.total * 100);
+              
+            }
+            else if(event.type == HttpEventType.Response){
+              console.log(event.body);
+              this.ls.showLoad = false;
+              this.submitted = false;
+              this.router.navigate(['/add/experiment/'+x]);
+            }
             
-          }
-          else if(event.type == HttpEventType.Response){
-            console.log(event.body);
-            this.ls.showLoad = false;
-            this.submitted = false;
-            //this.ngOnInit();
-          }
-          
+          })
         })
       })
-    })
+    }else{
+      let keys = Object.keys(this.files).filter(file => !!this.files[file]);
+      let k = keys.length;
+      if(Object.keys(this.update).length>0){
+        this.update['Id']=this.item.id_experiment;
+        if(this.update['Inventory']){
+          this.update['Inventory']=this.einventory.map(x => {let s = { id_inv:x.id_inv }; return s; });
+        }
+        this.as.updateExperiment(this.update).subscribe(x => {
+          this.update = {};
+          if(k==0){
+            this.ls.showLoad = false;
+            this.submitted = false;
+            this.ngOnInit();
+          }
+        })
+      }else{
+        
+        keys.forEach(f => {
+          let formData = new FormData();
+          formData.append('Data', this.files[f]);
+          this.as.UploadFile(this.item.id_experiment, UploadTypes.Experiment, formData, f).subscribe(event=>{
+            if(event.type == HttpEventType.UploadProgress){
+              this.ls.load = Math.round(event.loaded/event.total * 100);
+              
+            }
+            else if(event.type == HttpEventType.Response){
+              console.log(event.body);
+              k--;
+              if(k==0 && Object.keys(this.update).length==0){
+                this.ls.showLoad = false;
+                this.submitted = false;
+                this.files = {};
+                this.ngOnInit();
+              }
+              
+              
+            }
+            
+          })
+        })
+      }
+      
+      console.log(this.update);
+      console.log(this.files);
+    }
+    
   }
 
 

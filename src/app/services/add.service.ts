@@ -39,5 +39,5 @@ export class AddService{
 
     get f() { return this.addForm.controls; }
     get v() { return this.addForm.value; }
-    get upd_length() { return Object.keys(this.update).length; }
+    get upd_length() { return Object.keys(this.update).length+Object.keys(this.files).filter(x => !!this.files[x]).length; }
 }

@@ -137,6 +137,10 @@ export class AdminService{
         return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-periodical&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
     }
 
+    public updateExperiment(enter){
+        return this.http.post<any>(this.baseUrl + 'controller.php?Key=update-experiment&Login='+this.us.user.Login+'&Password='+this.us.user.Password, enter);
+    }
+
     /**
      * Загрузка файлов на сервер
      * @param id Id родителя изображения

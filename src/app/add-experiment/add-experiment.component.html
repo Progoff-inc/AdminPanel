@@ -3,34 +3,34 @@
   
   <div class="form-group">
       <label [ngClass]="{'text-danger':(submitted && f.id_solid.errors)}" for="DES">Кристалл</label>
-      <select [ngClass]="{'border-danger':(submitted && f.id_solid.errors)}" formControlName="id_solid" class="form-control"  id="DES" >
+      <select [ngClass]="{'border-danger':(submitted && f.id_solid.errors)}" (change)="upd(id_solid)" formControlName="id_solid" class="form-control"  id="id_solid" #id_solid>
         <option value="{{s.id_solids}}" *ngFor="let s of solids">{{s.name}}</option>
       </select>
       <small  class="form-text text-danger" *ngIf="submitted && f.id_solid.errors && f.id_solid.errors.required">Укажите кристалл</small>
   </div>
   <div class="form-group">
     <label for="na" [ngClass]="{'text-danger':(submitted && f.conditions.errors)}">Условия</label>
-    <input [ngClass]="{'border-danger':(submitted && f.conditions.errors)}" formControlName="conditions" class="form-control" id="na" placeholder="Условия проведения">
+    <input [ngClass]="{'border-danger':(submitted && f.conditions.errors)}" (change)="upd(conditions)" formControlName="conditions" class="form-control" id="conditions" placeholder="Условия проведения" #conditions>
     <small  class="form-text text-danger" *ngIf="submitted && f.conditions.errors && f.conditions.errors.required">Введите условия</small>
   </div>
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.photo.errors)}">Фотография</label>
-      <document *ngIf="item && item.photo" [type]="'img'" [href]="item.photo"></document>
-      <span>{{v.photo==''?'':getValue(v.photo)}}<button class="btn btn-link" (click)="photo.click()">{{v.photo==''?'Загрузить':'Изменить'}} фотографию</button></span>
+      <document *ngIf="v.photo=='' && item && item.photo" [type]="'img'" [href]="item.photo"></document>
+      <span>{{v.photo==''?'':getValue(v.photo)}}<button class="btn btn-link" (click)="photo.click()">{{!item && v.photo=='' || item && item.photo==''?'Загрузить':'Изменить'}} фотографию</button></span>
       <input class="d-none" id='photo' type="file" (change)="setFile($event)" formControlName="photo" #photo>
       <small  class="form-text text-danger" *ngIf="submitted && f.photo.errors && f.photo.errors.pattern">Файл с расширением .png или .jpg</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.rng.errors)}">Диапазон</label>
-      <input [ngClass]="{'border-danger':(submitted && f.rng.errors)}" formControlName="rng"  class="form-control" placeholder="Код">
+      <input [ngClass]="{'border-danger':(submitted && f.rng.errors)}" (change)="upd(rng)" formControlName="rng"  class="form-control" id="rng" placeholder="Диапазон" #rng>
       <small  class="form-text text-danger" *ngIf="submitted && f.rng.errors && f.rng.errors.required">Введите диапазон</small>
   </div>
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.table_of_frequency.errors)}">Исследование</label>
-      <document *ngIf="item && item.table_of_frequency" [type]="'doc'" [href]="item.table_of_frequency"></document>
-      <span>{{v.table_of_frequency==''?'':getValue(v.table_of_frequency)}}<button class="btn btn-link" (click)="table_of_frequency.click()">{{v.table_of_frequency==''?'Загрузить':'Изменить'}} файл исследования</button></span>
+      <document *ngIf="v.table_of_frequency=='' && item && item.table_of_frequency" [type]="'doc'" [href]="item.table_of_frequency"></document>
+      <span>{{v.table_of_frequency==''?'':getValue(v.table_of_frequency)}}<button class="btn btn-link" (click)="table_of_frequency.click()">{{!item && v.table_of_frequency=='' || item && item.table_of_frequency==''?'Загрузить':'Изменить'}} файл исследования</button></span>
       <input class="d-none" id='table_of_frequency' type="file" (change)="setFile($event)" formControlName="table_of_frequency" #table_of_frequency>
-      <small  class="form-text text-danger" *ngIf="submitted && f.table_of_frequency.errors && f.table_of_frequency.errors.pattern">Файл с расширением .doc, .docx, .pdf или .xlsx</small>
+      <small  class="form-text text-danger" *ngIf="submitted && f.table_of_frequency.errors && f.table_of_frequency.errors.pattern">Файл с расширением .doc, .docx, .pdf, .xlsx или .xls</small>
   </div>
   
   <h3 class="header">Инвентарь</h3>
