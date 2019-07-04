@@ -63,10 +63,6 @@ export class AddExperimentComponent extends AddService implements OnInit {
     }
     
   }
-  setFile(e){
-    this.files[e.target.id]=e.target.files[0];
-    console.log(this.files);
-  }
   send(){
     
     this.submitted = true;

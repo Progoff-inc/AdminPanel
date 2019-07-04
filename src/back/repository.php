@@ -297,6 +297,13 @@ class DataBase {
         return $sth->fetch();
     }
 
+    private function getCatalogItem($id){
+        $sth = $this->db->prepare("SELECT * FROM catalog_of_solids WHERE id_catalog_of_solids=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Catalog');
+        return $sth->fetch();
+    }
+
     private function getSolid($id){
         $sth = $this->db->prepare("SELECT * FROM solids WHERE id_solid=?");
         $sth->execute(array($id));
@@ -602,6 +609,19 @@ class DataBase {
                 unset($new['Inventory']);
             }
             $a = $this->genUpdateQuery(array_keys($new), array_values($new), "experiment", $id, 'id_experiment');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+
+    public function updateCatalog($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "catalog_of_solids", $id, 'id_catalog_of_solids');
             $s = $this->db->prepare($a[0]);
             $s->execute($a[1]);
             return $a;

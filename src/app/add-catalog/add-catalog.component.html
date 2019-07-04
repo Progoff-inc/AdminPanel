@@ -3,26 +3,27 @@
   
   <div class="form-group">
       <label [ngClass]="{'text-danger':(submitted && f.id_solids.errors)}" for="DES">Кристалл</label>
-      <select [ngClass]="{'border-danger':(submitted && f.id_solids.errors)}" formControlName="id_solids" class="form-control"  id="DES" >
+      <select [ngClass]="{'border-danger':(submitted && f.id_solids.errors)}" (change)="upd(id_solids)" formControlName="id_solids" class="form-control"  id="id_solids" #id_solids>
         <option value="{{s.id_solids}}" *ngFor="let s of solids">{{s.name}}</option>
       </select>
       <small  class="form-text text-danger" *ngIf="submitted && f.id_solids.errors && f.id_solids.errors.required">Укажите кристалл</small>
   </div>
   <div class="form-group">
       <label [ngClass]="{'text-danger':(submitted && f.id_growing.errors)}" for="DES">Выращивание</label>
-      <select [ngClass]="{'border-danger':(submitted && f.id_growing.errors)}" formControlName="id_growing" class="form-control"  id="DES" >
+      <select [ngClass]="{'border-danger':(submitted && f.id_growing.errors)}" (change)="upd(id_growing)" formControlName="id_growing" class="form-control"  id="id_growing" #id_growing>
         <option value="{{s.id_growing}}" *ngFor="let s of growings">{{s.name}} | {{s.crochet_name}} {{s.crochet_surname}}</option>
       </select>
       <small  class="form-text text-danger" *ngIf="submitted && f.id_growing.errors && f.id_growing.errors.required">Укажите выращивание</small>
   </div>
   <div class="form-group d-flex flex-column align-items-start">
     <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.date_of_delivery.errors)}">Дата поставки</label>
-    <input  class="form-control" type="date" formControlName="date_of_delivery">
+    <input  class="form-control" type="date" (change)="upd(date_of_delivery)" formControlName="date_of_delivery" id="date_of_delivery" #date_of_delivery>
     <small  class="form-text text-danger" *ngIf="submitted && f.date_of_delivery.errors && f.date_of_delivery.errors.required">Введите дату</small>
 </div>
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.foto_of_range.errors)}">foto_of_range</label>
-      <span>{{v.foto_of_range==''?'':getValue(v.foto_of_range)}}<button class="btn btn-link" (click)="foto_of_range.click()">{{v.foto_of_range==''?'Загрузить':'Изменить'}} фотографию</button></span>
+      <document *ngIf="v.foto_of_range=='' && item && item.foto_of_range" [type]="'img'" [href]="item.foto_of_range"></document>
+      <span>{{v.foto_of_range==''?'':getValue(v.foto_of_range)}}<button class="btn btn-link" (click)="foto_of_range.click()">{{v.foto_of_range=='' || item && item.foto_of_range==''?'Загрузить':'Изменить'}} фотографию</button></span>
       
       <input class="d-none" id='foto_of_range' type="file" (change)="setFile($event)" formControlName="foto_of_range" #foto_of_range>
       <small  class="form-text text-danger" *ngIf="submitted && f.foto_of_range.errors && f.foto_of_range.errors.pattern">Файл с расширением .png или .jpg</small>
@@ -30,21 +31,22 @@
   
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.foto_of_solid.errors)}">Фотография кристалла</label>
-      <span>{{v.foto_of_solid==''?'':getValue(v.foto_of_solid)}}<button class="btn btn-link" (click)="foto_of_solid.click()">{{v.foto_of_solid==''?'Загрузить':'Изменить'}} фотографию</button></span>
+      <document *ngIf="v.foto_of_solid=='' && item && item.foto_of_solid" [type]="'img'" [href]="item.foto_of_solid"></document>
+      <span>{{v.foto_of_solid==''?'':getValue(v.foto_of_solid)}}<button class="btn btn-link" (click)="foto_of_solid.click()">{{v.foto_of_solid=='' || item && item.foto_of_solid==''?'Загрузить':'Изменить'}} фотографию</button></span>
       <input class="d-none" id='foto_of_solid' type="file" (change)="setFile($event)" formControlName="foto_of_solid" #foto_of_solid>
       <small  class="form-text text-danger" *ngIf="submitted && f.foto_of_solid.errors && f.foto_of_solid.errors.pattern">Файл с расширением .png или .jpg</small>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" >hyper_attributes</label>
-      <textarea formControlName="hyper_attributes"  class="form-control" placeholder="hyper_attributes"></textarea>
+      <textarea formControlName="hyper_attributes" (change)="upd(hyper_attributes)" class="form-control" placeholder="hyper_attributes" id="hyper_attributes" #hyper_attributes></textarea>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" >Комментарии</label>
-      <textarea formControlName="comments"  class="form-control" placeholder="Комментарии"></textarea>
+      <textarea formControlName="comments" (change)="upd(comments)" class="form-control" placeholder="Комментарии" id="comments" #comments></textarea>
   </div>
   <div class="form-group">
       <label for="exampleInputEmail1" >hyper_range</label>
-      <textarea formControlName="hyper_range"  class="form-control" placeholder="hyper_range"></textarea>
+      <textarea formControlName="hyper_range" (change)="upd(hyper_range)"  class="form-control" placeholder="hyper_range" id="hyper_range" #hyper_range></textarea>
   </div>
   
   

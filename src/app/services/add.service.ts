@@ -21,6 +21,10 @@ export class AddService{
         }
         
     }
+    setFile(e){
+      this.files[e.target.id]=e.target.files[0];
+      console.log(this.files);
+    }
 
     updArray(name, arr){
         this.update[name]=arr;

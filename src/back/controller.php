@@ -54,6 +54,9 @@ if(isset($_GET['Key']))
         case 'get-experiment':
             echo json_encode($ctxt->getExperiment($_GET['Login'], $_GET['Password'], $_GET['Id']));
             break;
+        case 'get-catalog-item':
+            echo json_encode($ctxt->getCatalogItem($_GET['Login'], $_GET['Password'], $_GET['Id']));
+            break;
 
         // --------------- Добавление данных ---------------
 
@@ -130,6 +133,11 @@ if(isset($_GET['Key']))
         case 'update-experiment':
             $b = json_decode(file_get_contents('php://input'), true);
             echo json_encode($ctxt->updateExperiment($_GET['Login'], $_GET['Password'], $b));
+            break;
+
+        case 'update-catalog':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateCatalog($_GET['Login'], $_GET['Password'], $b));
             break;
             
             // --------------- Загрузка файлов ---------------
