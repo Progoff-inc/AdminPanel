@@ -45,6 +45,15 @@ if(isset($_GET['Key']))
         case 'get-catalog':
             echo json_encode($ctxt->getCatalog($_GET['Login'], $_GET['Password']));
             break;
+        case 'get-growing':
+            echo json_encode($ctxt->getGrowing($_GET['Login'], $_GET['Password'], $_GET['Id']));
+            break;
+        case 'get-periodical':
+            echo json_encode($ctxt->getPeriodical($_GET['Login'], $_GET['Password'], $_GET['Id']));
+            break;
+        case 'get-experiment':
+            echo json_encode($ctxt->getExperiment($_GET['Login'], $_GET['Password'], $_GET['Id']));
+            break;
 
         // --------------- Добавление данных ---------------
 
@@ -107,6 +116,20 @@ if(isset($_GET['Key']))
         case 'update-solid':
             $b = json_decode(file_get_contents('php://input'), true);
             echo json_encode($ctxt->updateSolid($_GET['Login'], $_GET['Password'], $b));
+            break;
+        case 'update-growing':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateGrowing($_GET['Login'], $_GET['Password'], $b));
+            break;
+        
+        case 'update-periodical':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updatePeriodical($_GET['Login'], $_GET['Password'], $b));
+            break;
+            
+        case 'update-experiment':
+            $b = json_decode(file_get_contents('php://input'), true);
+            echo json_encode($ctxt->updateExperiment($_GET['Login'], $_GET['Password'], $b));
             break;
             
             // --------------- Загрузка файлов ---------------

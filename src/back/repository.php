@@ -31,7 +31,7 @@ class DataBase {
                 $this->removeFile($img);
             }
             $url = "http://client.nomokoiw.beget.tech/admin/";
-            $n = basename($t."_".$pid."_".$files['Data']['name']);
+            $n = basename($t."_".$pid."__".$files['Data']['name']);
             //$tid=ucfirst($t)."Id";
             $tid="id_".$t;
             $d = "Files/$n";
@@ -142,6 +142,20 @@ class DataBase {
         
     }
     
+    
+    private function mergeCollection($t, $main_id_name, $main_id, $new_items){
+        $sth = $this->db->prepare("DELETE FROM $t WHERE $main_id_name=?");
+        $sth->execute(array($main_id));
+        for($i = 0; $i<count($new_items); $i++){
+            $new_items[$i][$main_id_name]=$main_id;
+            $res = $this->genInsertQuery($new_items[$i], $t);
+            $s = $this->db->prepare($res[0]);
+            if($res[1][0]!=null){
+                $s->execute($res[1]);
+            }
+        }
+    }
+    
     // ------------------------       Запросы на получение данных из базы       ------------------------
 
     public function getSolids($l, $p){
@@ -238,6 +252,43 @@ class DataBase {
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Crochet');
         return $sth->fetch();
     }
+    
+    public function getGrowing($l, $p, $id){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->prepare("SELECT * FROM growings WHERE id_growing=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Growing');
+        return $sth->fetch();
+    }
+    
+    public function getPeriodical($l, $p, $id){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->prepare("SELECT * FROM periodicals WHERE id_periodicals=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Periodical');
+        $p = $sth->fetch();
+        $p->Authors = $this->getPeriodicalAuthors($id);
+        $p->Solids = $this->getPeriodicalSolids($id);
+        
+        return $p;
+    }
+    
+    public function getExperiment($l, $p, $id){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $sth = $this->db->prepare("SELECT * FROM experiment WHERE id_experiment=?");
+        $sth->execute(array($id));
+        $sth->setFetchMode(PDO::FETCH_CLASS, 'Experiment');
+        $p = $sth->fetch();
+        $p->Inventory = $this->getExperimentInventory($id);
+        
+        return $p;
+    }
 
     private function getMethod($id){
         $sth = $this->db->prepare("SELECT * FROM methods WHERE id_crochet=?");
@@ -261,14 +312,14 @@ class DataBase {
     }
 
     private function getExperimentInventory($id){
-        $sth = $this->db->prepare("SELECT * FROM exp_inv ei JOIN invetory i ON ei.id_inv=i.id_inventory WHERE id_exp=?");
+        $sth = $this->db->prepare("SELECT ei.id_inv, ei.id_exp FROM exp_inv ei JOIN inventory i ON ei.id_inv=i.id_inventory WHERE id_exp=?");
         $sth->execute(array($id));
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Inventory');
         return $sth->fetchAll();
     }
 
     private function getPeriodicalSolids($id){
-        $sth = $this->db->prepare("SELECT * FROM periodicals_catalog pc JOIN solids s ON pc.id_solid =s.id_solids WHERE id_period=?");
+        $sth = $this->db->prepare("SELECT pc.id_period, pc.id_solid FROM periodicals_catalog pc JOIN solids s ON pc.id_solid =s.id_solids WHERE id_period=?");
         $sth->execute(array($id));
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Solid');
         return $sth->fetchAll();
@@ -456,6 +507,19 @@ class DataBase {
         }
     }
     
+    public function updateGrowing($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "growings", $id, 'id_growing');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+    
     public function updateCrochet($l, $p, $new){
         if($this->checkAdmin($l, $p)){
             $id = $new['Id'];
@@ -495,11 +559,49 @@ class DataBase {
         }
     }
     
+    public function updatePeriodical($l, $p, $new){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
+        $id = $new['Id'];
+        unset($new['Id']);
+        if($new['Solids']!=null){
+            $this->mergeCollection('periodicals_catalog', 'id_period', $id, $new['Solids']);
+            unset($new['Solids']);
+        }
+        if($new['Authors']!=null){
+            $this->mergeCollection('periodic_author', 'id_period', $id, $new['Authors']);
+            unset($new['Authors']);
+        }
+        
+        $a = $this->genUpdateQuery(array_keys($new), array_values($new), "periodicals", $id, 'id_periodicals');
+        $s = $this->db->prepare($a[0]);
+        $s->execute($a[1]);
+        return $a;
+    }
+    
     public function updateInventory($l, $p, $new){
         if($this->checkAdmin($l, $p)){
             $id = $new['Id'];
             unset($new['Id']);
             $a = $this->genUpdateQuery(array_keys($new), array_values($new), "inventory", $id, 'id_inventory');
+            $s = $this->db->prepare($a[0]);
+            $s->execute($a[1]);
+            return $a;
+        }else{
+            return false;
+        }
+    }
+    
+    public function updateExperiment($l, $p, $new){
+        if($this->checkAdmin($l, $p)){
+            $id = $new['Id'];
+            unset($new['Id']);
+            if($new['Inventory']!=null){
+                $this->mergeCollection('exp_inv', 'id_exp', $id, $new['Inventory']);
+                unset($new['Inventory']);
+            }
+            $a = $this->genUpdateQuery(array_keys($new), array_values($new), "experiment", $id, 'id_experiment');
             $s = $this->db->prepare($a[0]);
             $s->execute($a[1]);
             return $a;
