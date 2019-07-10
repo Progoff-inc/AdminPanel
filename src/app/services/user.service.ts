@@ -102,7 +102,6 @@ export class UserService{
      */
     public save(local = false){
         if(local){
-            console.log(this.user);
             localStorage.setItem('userAdminPanel', JSON.stringify(this.user));
         }
         sessionStorage.setItem('userAdminPanel', JSON.stringify(this.user));

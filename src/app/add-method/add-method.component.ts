@@ -36,7 +36,6 @@ export class AddMethodComponent extends AddService implements OnInit {
     }
     if(this.item){
       this.update['Id']=this.item.id_method;
-      console.log(this.update);
       this.as.updateMethod(this.update).subscribe(x => {
         Object.keys(this.update).forEach(x => {
           if(x!='Id'){

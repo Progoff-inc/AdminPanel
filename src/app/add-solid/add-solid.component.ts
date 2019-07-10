@@ -40,7 +40,6 @@ export class AddSolidComponent extends AddService implements OnInit {
     }
     if(this.item){
       this.update['Id']=this.item.id_solids;
-      console.log(this.update);
       this.as.updateSolid(this.update).subscribe(x => {
         Object.keys(this.update).forEach(x => {
           if(x!='Id'){

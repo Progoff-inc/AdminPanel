@@ -38,7 +38,6 @@ export class AddExperimentComponent extends AddService implements OnInit {
     if(this.route.snapshot.paramMap.get("id")){
       this.as.getExperiment((this.route.snapshot.paramMap.get("id"))).subscribe(x => {
         this.item = x;
-        console.log(x);
         this.einventory = x.Inventory;
         this.addForm = this.fb.group({
           conditions: [this.item.conditions, Validators.required],
@@ -50,10 +49,6 @@ export class AddExperimentComponent extends AddService implements OnInit {
       })
       
     }
-
-    this.addForm.valueChanges.subscribe(v=>{
-      console.log(v);
-    })
   }
 
   addInv(){
@@ -90,7 +85,6 @@ export class AddExperimentComponent extends AddService implements OnInit {
               
             }
             else if(event.type == HttpEventType.Response){
-              console.log(event.body);
               this.ls.showLoad = false;
               this.submitted = false;
               this.router.navigate(['/add/experiment/'+x]);
@@ -125,7 +119,6 @@ export class AddExperimentComponent extends AddService implements OnInit {
             
           }
           else if(event.type == HttpEventType.Response){
-            console.log(event.body);
             k--;
             if(k==0 && Object.keys(this.update).length==0){
               this.ls.showLoad = false;
@@ -139,9 +132,6 @@ export class AddExperimentComponent extends AddService implements OnInit {
           
         })
       })
-      
-      console.log(this.update);
-      console.log(this.files);
     }
     
   }

@@ -45,7 +45,6 @@ export class AddInventoryComponent extends AddService implements OnInit {
     }
     if(this.item){
       this.update['Id']=this.item.id_inventory;
-      console.log(this.update);
       this.as.updateInventory(this.update).subscribe(x => {
         Object.keys(this.update).forEach(x => {
           if(x!='Id'){
@@ -56,7 +55,6 @@ export class AddInventoryComponent extends AddService implements OnInit {
       })
     }else{
       this.as.addInventory(this.v).subscribe(x => {
-        console.log(x);
         let s = this.v;
         s['id_inventory']=x;
         this.items.push(s);

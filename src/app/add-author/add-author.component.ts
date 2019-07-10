@@ -49,7 +49,6 @@ export class AddAuthorComponent extends AddService implements OnInit{
     }else{
       
       this.update['Id']=this.item.id_authors;
-      console.log(this.update);
       this.as.updateAuthor(this.update).subscribe(x => {
         Object.keys(this.update).forEach(x => {
           if(x!='Id'){

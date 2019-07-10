@@ -53,7 +53,6 @@ export class AddCrochetComponent extends AddService implements OnInit {
       })
     }else{
       this.update['Id']=this.item.id_crochet;
-      console.log(this.update);
       this.as.updateCrochet(this.update).subscribe(x => {
         Object.keys(this.update).forEach(x => {
           if(x!='Id'){

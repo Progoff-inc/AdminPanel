@@ -23,7 +23,6 @@ export class AddService{
     }
     setFile(e){
       this.files[e.target.id]=e.target.files[0];
-      console.log(this.files);
     }
 
     updArray(name, arr){
@@ -31,7 +30,6 @@ export class AddService{
     }
 
     upd(item){
-        console.log(item);
         this.update[item.id]=item.value;
        
     }

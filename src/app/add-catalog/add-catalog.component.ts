@@ -79,7 +79,6 @@ export class AddCatalogComponent extends AddService implements OnInit {
               
             }
             else if(event.type == HttpEventType.Response){
-              console.log(event.body);
               this.ls.showLoad = false;
               //this.ngOnInit();
               this.router.navigate(['/add/experiment/'+x]);
@@ -93,9 +92,7 @@ export class AddCatalogComponent extends AddService implements OnInit {
       let k = keys.length;
       if(Object.keys(this.update).length>0){
         this.update['Id']=this.item.id_catalog_of_solids;
-        console.log(this.update);
         this.as.updateCatalog(this.update).subscribe(x => {
-          console.log(x);
           this.update = {};
           if(k==0){
             this.ls.showLoad = false;
@@ -113,7 +110,6 @@ export class AddCatalogComponent extends AddService implements OnInit {
             
           }
           else if(event.type == HttpEventType.Response){
-            console.log(event.body);
             k--;
             if(k==0 && Object.keys(this.update).length==0){
               this.ls.showLoad = false;

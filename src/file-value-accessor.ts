@@ -22,7 +22,6 @@ export class FileValueAccessorDirective implements ControlValueAccessor {
     }
 
   writeValue(value: any) {
-      console.log(value);
     const normalizedValue = value == null ? '' : value;
     this.render.setProperty(this.element.nativeElement, 'value', normalizedValue);
   }
