@@ -40,7 +40,6 @@ export class AddCatalogComponent extends AddService implements OnInit {
     if(this.route.snapshot.paramMap.get("id")){
       this.as.getCatalogItem((this.route.snapshot.paramMap.get("id"))).subscribe(x => {
         this.item = x;
-        console.log(x);
         this.addForm = this.fb.group({
           id_solids: [this.item.id_solids, Validators.required],
           id_growing: [this.item.id_growing, Validators.required],
@@ -71,7 +70,6 @@ export class AddCatalogComponent extends AddService implements OnInit {
       p.foto_of_range=null;
       p.foto_of_solid = null;
       this.as.addCatalog(p).subscribe(x => {
-        console.log(x);
         Object.keys(this.files).forEach(f => {
           let formData = new FormData();
           formData.append('Data', this.files[f]);
@@ -95,7 +93,9 @@ export class AddCatalogComponent extends AddService implements OnInit {
       let k = keys.length;
       if(Object.keys(this.update).length>0){
         this.update['Id']=this.item.id_catalog_of_solids;
-        this.as.updateExperiment(this.update).subscribe(x => {
+        console.log(this.update);
+        this.as.updateCatalog(this.update).subscribe(x => {
+          console.log(x);
           this.update = {};
           if(k==0){
             this.ls.showLoad = false;
@@ -103,32 +103,30 @@ export class AddCatalogComponent extends AddService implements OnInit {
             this.ngOnInit();
           }
         })
-      }else{
-        
-        keys.forEach(f => {
-          let formData = new FormData();
-          formData.append('Data', this.files[f]);
-          this.as.UploadFile(this.item.id_catalog_of_solids, UploadTypes.Catalog, formData, f).subscribe(event=>{
-            if(event.type == HttpEventType.UploadProgress){
-              this.ls.load = Math.round(event.loaded/event.total * 100);
-              
-            }
-            else if(event.type == HttpEventType.Response){
-              console.log(event.body);
-              k--;
-              if(k==0 && Object.keys(this.update).length==0){
-                this.ls.showLoad = false;
-                this.submitted = false;
-                this.files = {};
-                this.ngOnInit();
-              }
-              
-              
+      }
+      keys.forEach(f => {
+        let formData = new FormData();
+        formData.append('Data', this.files[f]);
+        this.as.UploadFile(this.item.id_catalog_of_solids, UploadTypes.Catalog, formData, f).subscribe(event=>{
+          if(event.type == HttpEventType.UploadProgress){
+            this.ls.load = Math.round(event.loaded/event.total * 100);
+            
+          }
+          else if(event.type == HttpEventType.Response){
+            console.log(event.body);
+            k--;
+            if(k==0 && Object.keys(this.update).length==0){
+              this.ls.showLoad = false;
+              this.submitted = false;
+              this.files = {};
+              this.ngOnInit();
             }
             
-          })
+            
+          }
+          
         })
-      }
+      })
     }
   }
 

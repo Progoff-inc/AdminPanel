@@ -297,7 +297,10 @@ class DataBase {
         return $sth->fetch();
     }
 
-    private function getCatalogItem($id){
+    public function getCatalogItem($l, $p, $id){
+        if(!$this->checkAdmin($l, $p)){
+            return;
+        }
         $sth = $this->db->prepare("SELECT * FROM catalog_of_solids WHERE id_catalog_of_solids=?");
         $sth->execute(array($id));
         $sth->setFetchMode(PDO::FETCH_CLASS, 'Catalog');

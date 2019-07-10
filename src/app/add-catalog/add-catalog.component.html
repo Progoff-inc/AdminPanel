@@ -23,7 +23,7 @@
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.foto_of_range.errors)}">foto_of_range</label>
       <document *ngIf="v.foto_of_range=='' && item && item.foto_of_range" [type]="'img'" [href]="item.foto_of_range"></document>
-      <span>{{v.foto_of_range==''?'':getValue(v.foto_of_range)}}<button class="btn btn-link" (click)="foto_of_range.click()">{{v.foto_of_range=='' || item && item.foto_of_range==''?'Загрузить':'Изменить'}} фотографию</button></span>
+      <span>{{v.foto_of_range==''?'':getValue(v.foto_of_range)}}<button class="btn btn-link" (click)="foto_of_range.click()">{{!item && v.foto_of_range=='' || item && item.foto_of_range==''?'Загрузить':'Изменить'}} фотографию</button></span>
       
       <input class="d-none" id='foto_of_range' type="file" (change)="setFile($event)" formControlName="foto_of_range" #foto_of_range>
       <small  class="form-text text-danger" *ngIf="submitted && f.foto_of_range.errors && f.foto_of_range.errors.pattern">Файл с расширением .png или .jpg</small>
@@ -32,7 +32,7 @@
   <div class="form-group d-flex flex-column align-items-start">
       <label for="exampleInputEmail1" [ngClass]="{'text-danger':(submitted && f.foto_of_solid.errors)}">Фотография кристалла</label>
       <document *ngIf="v.foto_of_solid=='' && item && item.foto_of_solid" [type]="'img'" [href]="item.foto_of_solid"></document>
-      <span>{{v.foto_of_solid==''?'':getValue(v.foto_of_solid)}}<button class="btn btn-link" (click)="foto_of_solid.click()">{{v.foto_of_solid=='' || item && item.foto_of_solid==''?'Загрузить':'Изменить'}} фотографию</button></span>
+      <span>{{v.foto_of_solid==''?'':getValue(v.foto_of_solid)}}<button class="btn btn-link" (click)="foto_of_solid.click()">{{!item && v.foto_of_solid=='' || item && item.foto_of_solid==''?'Загрузить':'Изменить'}} фотографию</button></span>
       <input class="d-none" id='foto_of_solid' type="file" (change)="setFile($event)" formControlName="foto_of_solid" #foto_of_solid>
       <small  class="form-text text-danger" *ngIf="submitted && f.foto_of_solid.errors && f.foto_of_solid.errors.pattern">Файл с расширением .png или .jpg</small>
   </div>
@@ -50,5 +50,5 @@
   </div>
   
   
-  <button class="btn btn-primary" (click)="send()">Отправить</button>
+  <button *ngIf="!item || upd_length>0" class="btn btn-primary" (click)="send()">Отправить</button>
 </form>

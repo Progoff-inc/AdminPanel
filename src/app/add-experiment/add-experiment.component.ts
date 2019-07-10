@@ -115,32 +115,30 @@ export class AddExperimentComponent extends AddService implements OnInit {
             this.ngOnInit();
           }
         })
-      }else{
-        
-        keys.forEach(f => {
-          let formData = new FormData();
-          formData.append('Data', this.files[f]);
-          this.as.UploadFile(this.item.id_experiment, UploadTypes.Experiment, formData, f).subscribe(event=>{
-            if(event.type == HttpEventType.UploadProgress){
-              this.ls.load = Math.round(event.loaded/event.total * 100);
-              
-            }
-            else if(event.type == HttpEventType.Response){
-              console.log(event.body);
-              k--;
-              if(k==0 && Object.keys(this.update).length==0){
-                this.ls.showLoad = false;
-                this.submitted = false;
-                this.files = {};
-                this.ngOnInit();
-              }
-              
-              
+      }
+      keys.forEach(f => {
+        let formData = new FormData();
+        formData.append('Data', this.files[f]);
+        this.as.UploadFile(this.item.id_experiment, UploadTypes.Experiment, formData, f).subscribe(event=>{
+          if(event.type == HttpEventType.UploadProgress){
+            this.ls.load = Math.round(event.loaded/event.total * 100);
+            
+          }
+          else if(event.type == HttpEventType.Response){
+            console.log(event.body);
+            k--;
+            if(k==0 && Object.keys(this.update).length==0){
+              this.ls.showLoad = false;
+              this.submitted = false;
+              this.files = {};
+              this.ngOnInit();
             }
             
-          })
+            
+          }
+          
         })
-      }
+      })
       
       console.log(this.update);
       console.log(this.files);
